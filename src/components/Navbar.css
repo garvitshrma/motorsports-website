@@ -1,0 +1,328 @@
+/* ---- operations strip ---------------------------------------------------- */
+
+.opstrip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-inline: var(--gut);
+  background: var(--red);
+  color: #fff;
+  font-size: 0.52rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.opstrip__right {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.opstrip__tick {
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  display: inline-block;
+}
+
+/* ---- bar ----------------------------------------------------------------- */
+
+.nav {
+  position: fixed;
+  top: 26px;
+  left: 0;
+  right: 0;
+  z-index: 95;
+  height: var(--nav-h);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding-inline: var(--gut);
+  background: var(--ink);
+  border-bottom: var(--bw) solid var(--paper);
+}
+
+/* ---- wordmark ------------------------------------------------------------ */
+
+.nav__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav__badge {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+/* The logo fills the badge box without distortion, whatever its aspect ratio. */
+.nav__badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Fallback lettermark, and the knocked-out logo variant. */
+.nav__badge--red {
+  background: var(--red);
+  color: #fff;
+}
+
+/* A light or white logo standing on the dark bar — slightly larger, since it
+   has no block behind it to give it presence. */
+.nav__badge--bare {
+  width: 40px;
+  height: 40px;
+}
+
+/* Off-white plate: guarantees contrast for dark or full-colour marks. */
+.nav__badge--plate {
+  background: var(--paper);
+  padding: 4px;
+  width: 38px;
+  height: 38px;
+}
+
+.nav__badge--red img {
+  padding: 4px;
+}
+
+.nav__wordmark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.nav__wordmark b {
+  font-size: 1.28rem;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-stretch: 62%;
+}
+.nav__wordmark em {
+  font-style: normal;
+  color: var(--grey-d);
+  font-size: 0.48rem;
+  margin-top: 3px;
+}
+
+/* ---- links --------------------------------------------------------------- */
+
+.nav__links {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 2px;
+  height: 100%;
+}
+
+.nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--grey);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+  transition: color 0.14s ease, background 0.14s ease;
+}
+.nav__link:hover {
+  color: var(--paper);
+  background: var(--ink-3);
+}
+.nav__link.is-active {
+  color: var(--paper);
+  border-bottom-color: var(--red);
+}
+.nav__no {
+  color: var(--grey-d);
+  font-size: 0.5rem;
+}
+.nav__link.is-active .nav__no {
+  color: var(--red);
+}
+
+/* ---- cta ----------------------------------------------------------------- */
+
+.nav__cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 16px;
+  background: var(--red);
+  color: #fff;
+  border: 2px solid var(--red);
+  font-size: 0.55rem;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 4px 4px 0 var(--paper);
+}
+.nav__cta:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--paper);
+}
+
+/* ---- burger -------------------------------------------------------------- */
+
+.nav__burger {
+  display: none;
+  width: 48px;
+  height: 44px;
+  background: transparent;
+  border: 2px solid var(--paper);
+  cursor: pointer;
+  padding: 0;
+  place-items: center;
+}
+
+.nav__burger-box {
+  display: grid;
+  gap: 5px;
+  width: 20px;
+}
+.nav__burger-box i {
+  display: block;
+  height: 2.5px;
+  background: var(--paper);
+  transition: transform 0.2s ease, opacity 0.15s ease;
+}
+.nav__burger-box.is-open i:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+}
+.nav__burger-box.is-open i:nth-child(2) {
+  opacity: 0;
+}
+.nav__burger-box.is-open i:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+}
+
+/* ---- mobile sheet -------------------------------------------------------- */
+
+.sheet {
+  position: fixed;
+  inset: calc(26px + var(--nav-h)) 0 0 0;
+  z-index: 94;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-101%);
+  transition: transform 0.32s cubic-bezier(0.7, 0, 0.24, 1);
+  visibility: hidden;
+  overflow-y: auto;
+}
+.sheet.is-open {
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.sheet__head,
+.sheet__foot {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px var(--gut);
+  color: var(--grey-d);
+  font-size: 0.52rem;
+}
+.sheet__head {
+  border-bottom: 1px solid var(--ink-4);
+}
+.sheet__foot {
+  border-top: 1px solid var(--ink-4);
+  margin-top: auto;
+}
+
+.sheet__list {
+  flex: 1;
+}
+
+.sheet__link {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 20px var(--gut);
+  border-bottom: 1px solid var(--ink-4);
+  color: var(--grey);
+  min-height: 64px;
+}
+.sheet__link i {
+  color: var(--grey-d);
+  font-style: normal;
+}
+.sheet__link span {
+  color: var(--paper);
+}
+.sheet__link b {
+  color: var(--grey-d);
+  font-weight: 400;
+}
+.sheet__link.is-active {
+  background: var(--red);
+}
+.sheet__link.is-active i,
+.sheet__link.is-active span,
+.sheet__link.is-active b {
+  color: #fff;
+}
+
+/* ---- breakpoints --------------------------------------------------------- */
+
+@media (max-width: 1180px) {
+  .nav__link {
+    padding: 0 10px;
+    font-size: 0.55rem;
+  }
+  .nav__no {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .nav {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+  }
+  .nav__links,
+  .nav__cta {
+    display: none;
+  }
+  .nav__burger {
+    display: grid;
+  }
+}
+
+@media (max-width: 620px) {
+  /* Not enough room for both halves — the process line is the one that matters. */
+  .opstrip__right {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .opstrip {
+    font-size: 0.46rem;
+    letter-spacing: 0.14em;
+  }
+  .nav__wordmark b {
+    font-size: 1.1rem;
+  }
+}
