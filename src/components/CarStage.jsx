@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { MODEL_URL } from '../three/carConfig'
+import { setExpectsAssets } from '../lib/boot'
 import VehicleDrawing from '../three/VehicleDrawing'
 import './CarStage.css'
 
@@ -136,6 +137,12 @@ export default function CarStage({ progressTargetRef }) {
 
   const use3D = quality && quality !== 'off' && hasModel === true && !failed
   const deciding = quality === null || hasModel === null
+
+  // Tell the loading screen whether it should wait for a model at all.
+  useEffect(() => {
+    if (deciding) return
+    setExpectsAssets(Boolean(use3D))
+  }, [deciding, use3D])
 
   return (
     <div className="stage" ref={wrap} aria-hidden={!use3D}>

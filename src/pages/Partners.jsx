@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import PageHead from '../components/PageHead'
-import { Reveal, Tbc } from '../components/ui'
-import { sponsorTiers } from '../data/site'
+import { Reveal } from '../components/ui'
+import { sponsorTiers, sponsorsArePlaceholder } from '../data/site'
 import { usePageTitle } from '../lib/usePageTitle'
 import './pages.css'
 
@@ -10,26 +10,21 @@ import './pages.css'
  * title sponsors get the full-width slabs, supporting sponsors a dense strip.
  */
 export default function Partners() {
-  usePageTitle('PARTNERS — Team Agnishul')
+  usePageTitle('SPONSORS — Team Agnishul')
   const total = sponsorTiers.reduce((n, t) => n + t.sponsors.length, 0)
 
   return (
     <>
       <PageHead
         index="03"
-        kicker="SUPPORT STRUCTURE"
-        rail="PARTNERS / PROCUREMENT"
-        title={<>NOTHING GETS<br />BUILT ALONE.</>}
-        lede="Together, we push the boundaries of motorsports engineering. Our sponsors provide the foundation for innovation and championship-winning performance."
+        kicker="SPONSORS"
+        title="WHO BACKS US."
+        lede="Our sponsors pay for the parts, the tools and the travel."
         aside={
           <ul className="phead__stats">
             <li>
               <b className="display">{total}</b>
-              <span className="mono-sm">ORGANISATIONS</span>
-            </li>
-            <li>
-              <b className="display">{sponsorTiers.length}</b>
-              <span className="mono-sm">TIERS</span>
+              <span className="mono-sm">SPONSORS</span>
             </li>
           </ul>
         }
@@ -37,14 +32,14 @@ export default function Partners() {
 
       <section className="sec sec--paper on-paper">
         <div className="shell">
+          {sponsorsArePlaceholder && (
+            <p className="tiers__note mono-sm">SPONSOR LIST TO BE CONFIRMED</p>
+          )}
+
           {sponsorTiers.map((tier, ti) => (
-            <div className="ptier" key={tier.code}>
+            <div className="ptier" key={tier.tier}>
               <div className="ptier__head">
-                <span className="tag tag--red">{tier.code}</span>
                 <h2 className="display d-md">{tier.tier}</h2>
-                <span className="mono-sm dim">
-                  {String(tier.sponsors.length).padStart(2, '0')} LISTED
-                </span>
               </div>
 
               <div className={`ptier__grid ptier__grid--${ti + 1}`}>
@@ -55,10 +50,7 @@ export default function Partners() {
                       <div className="sponsor__mark" aria-hidden="true">
                         LOGO
                       </div>
-                      <p className="sponsor__name">
-                        {s.name}
-                        {s.tbc && <Tbc />}
-                      </p>
+                      <p className="sponsor__name">{s.name}</p>
                     </div>
                   </Reveal>
                 ))}
@@ -67,12 +59,7 @@ export default function Partners() {
           ))}
 
           <div className="ptier__cta slab slab--ink">
-            <div>
-              <h3 className="display d-md">BACK THE BUILD.</h3>
-              <p className="body" style={{ color: 'var(--grey-l)', marginTop: 12 }}>
-                Sponsorship keeps the workshop running. Talk to us about partnering with the team.
-              </p>
-            </div>
+            <h3 className="display d-md">SPONSOR THE TEAM.</h3>
             <Link to="/contact" className="btn btn--red">
               CONTACT US <span className="btn__arrow">→</span>
             </Link>

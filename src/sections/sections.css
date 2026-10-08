@@ -149,46 +149,6 @@
   line-height: 1;
 }
 
-/* --- subsystems ----------------------------------------------------------- */
-
-.subs {
-  margin-top: clamp(46px, 6vw, 84px);
-}
-.subs__head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid var(--ink-4);
-}
-.subs__head h3 {
-  font-size: 0.68rem;
-  letter-spacing: 0.24em;
-  font-weight: 400;
-}
-.subs__grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 20px;
-}
-.subs__cell {
-  padding: 20px 18px;
-  display: grid;
-  gap: 10px;
-  min-height: 104px;
-  align-content: center;
-  background: var(--ink-2);
-}
-.subs__id {
-  color: var(--red);
-  font-size: 0.55rem;
-}
-.subs__name {
-  font-size: 0.9rem;
-}
-
 /* ===========================  03 — JOURNEY  =============================== */
 
 .tl {
@@ -351,7 +311,17 @@
   letter-spacing: 0.12em;
 }
 .tiers__cta {
-  margin-top: 38px;
+  margin-top: 20px;
+}
+
+/* One line instead of a marker on every single sponsor. */
+.tiers__note {
+  margin-top: 22px;
+  color: var(--red);
+  border: 2px solid var(--red);
+  padding: 9px 12px;
+  display: inline-block;
+  font-size: 0.5rem;
 }
 
 /* ===========================  06 — JOIN  ================================== */
@@ -436,9 +406,6 @@
   .cycle__arrow {
     display: none;
   }
-  .subs__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 900px) {
@@ -512,9 +479,6 @@
   }
   .cycle__step {
     border-right: 0;
-  }
-  .subs__grid {
-    grid-template-columns: 1fr;
   }
   .log__row {
     grid-template-columns: 46px minmax(0, 1fr);

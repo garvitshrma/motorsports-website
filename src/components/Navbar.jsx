@@ -29,19 +29,14 @@ export default function Navbar() {
       <div className="opstrip">
         <span className="mono-sm">DESIGN → BUILD → TEST → RACE</span>
         <span className="mono-sm opstrip__right">
-          {team.locale} <i className="opstrip__tick" /> EST. {team.founded}
+          {team.locale}
         </span>
       </div>
 
       <header className="nav">
-        <NavLink to="/" className="nav__mark" aria-label={`${team.name} — home`}>
-          <span className={`nav__badge nav__badge--${team.logo ? team.logoStyle : 'red'}`}>
-            {team.logo ? <img src={team.logo} alt="" width="40" height="40" /> : 'A'}
-          </span>
-          <span className="nav__wordmark">
-            <b className="display">AGNISHUL</b>
-            <em className="mono-sm">{team.org}</em>
-          </span>
+        {/* The lockup already carries the org name, so no wordmark beside it. */}
+        <NavLink to="/" className="nav__mark" aria-label={`${team.org} — home`}>
+          <img className="nav__logo" src={team.logo} alt={team.org} width="1200" height="344" />
         </NavLink>
 
         <nav className="nav__links" aria-label="Primary">

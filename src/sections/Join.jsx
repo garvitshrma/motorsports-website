@@ -16,7 +16,7 @@ export default function Join() {
       </div>
 
       <div className="shell join__inner">
-        <p className="eyebrow">06 / 06 — RECRUITMENT</p>
+        <p className="eyebrow">JOIN US</p>
 
         <h2 className="join__head display">
           ENGINEERED
@@ -25,10 +25,7 @@ export default function Join() {
         </h2>
 
         <div className="join__grid">
-          <p className="body-lg">
-            Mechanical, electrical and software. If you want to put your name on something that
-            actually gets driven, the workshop is open.
-          </p>
+          <p className="body-lg">Mechanical, electrical, software. Recruitment is open.</p>
 
           <ul className="join__stats">
             {teamStats.map((s) => (
@@ -47,7 +44,7 @@ export default function Join() {
             GET IN TOUCH <span className="btn__arrow">→</span>
           </Link>
           <Link to="/team" className="btn btn--onink">
-            MEET THE CREW
+            MEET THE TEAM
           </Link>
         </div>
       </div>

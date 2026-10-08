@@ -9,25 +9,15 @@ import './pages.css'
  * the rest run as ruled records beneath it.
  */
 export default function Dispatch() {
-  usePageTitle('DISPATCH — Team Agnishul')
+  usePageTitle('NEWS — Team Agnishul')
   const [lead, ...rest] = news
 
   return (
     <>
       <PageHead
         index="05"
-        kicker="DISPATCH"
-        rail="UPDATES / ANNOUNCEMENTS"
-        title={<>LATEST FROM<br />THE PROGRAMME.</>}
-        lede="Updates, achievements and announcements from the workshop and the paddock."
-        aside={
-          <ul className="phead__stats">
-            <li>
-              <b className="display">{String(news.length).padStart(2, '0')}</b>
-              <span className="mono-sm">ENTRIES</span>
-            </li>
-          </ul>
-        }
+        kicker="NEWS"
+        title="LATEST."
       />
 
       <section className="sec sec--paper on-paper">
@@ -40,7 +30,6 @@ export default function Dispatch() {
                   <time className="mono-sm" dateTime={lead.iso}>
                     {lead.date}
                   </time>
-                  <span className="mono-sm dim">ENTRY {lead.no}</span>
                 </div>
                 <h2 className="display d-lg lead__title">{lead.title}</h2>
                 <p className="body-lg">{lead.body}</p>

@@ -1,16 +1,14 @@
 /**
  * SINGLE SOURCE OF TRUTH FOR ALL SITE CONTENT.
  * ---------------------------------------------------------------------------
- * Everything here was transcribed from the team's existing website
- * (https://iitbh-fi.vercel.app). Nothing has been invented.
+ * Everything here comes from the team's existing website
+ * (https://iitbh-fi.vercel.app). Nothing has been invented — the copy has been
+ * cut down, but no fact has been added.
  *
  * Some values on the source site are themselves unfilled placeholders
- * (e.g. "MEMBER NAME", "+91 XXX XXX XXXX", sponsor names, car spec numbers).
- * Those are flagged with `tbc: true` so they are visibly identifiable in the
- * UI and trivially greppable here. Replace them with real data before launch —
- * do not ship them as facts.
- *
- * Search this file for `tbc` to find every outstanding item.
+ * (e.g. "MEMBER NAME", "+91 XXX XXX XXXX", sponsor names, car specs). Those
+ * carry `tbc: true` so they stay visibly identifiable instead of reading as
+ * fact. Search for `tbc` to find every outstanding item.
  */
 
 export const team = {
@@ -18,31 +16,35 @@ export const team = {
   org: 'IIT BHILAI MOTORSPORTS',
   shortOrg: 'IIT BHILAI',
   tagline: 'ENGINEERING EXCELLENCE IN MOTION',
-  motto: 'IGNITING EXCELLENCE',
   locale: 'BHILAI / INDIA',
   founded: '2010',
 
   /**
-   * Club logo shown in the navbar badge.
-   * Put the file in /public/images and point at it here, e.g. '/images/logo.png'.
-   * While this is null the badge falls back to the red "A" mark.
+   * Club logo. Both files are generated from the supplied artwork: the white
+   * background is knocked out, and in the dark variant the black "IIT BHILAI"
+   * lettering and car outline are remapped to off-white so they stay legible.
+   * The red is untouched in both.
    */
-  logo: null,
+  logo: '/images/logo-dark.png', // navbar (dark grounds)
+  logoLight: '/images/logo.png', // original colours, for light grounds
 
   /**
-   * How the logo sits in the badge:
-   *   'bare'  — logo alone on the dark bar. Best for white / light marks.
-   *   'plate' — logo on an off-white square. Use for dark or full-colour marks.
-   *   'red'   — logo knocked out on the racing-red square.
+   * The loading screen spins the logo's wheels, so it uses a split version:
+   * the mark with both wheels lifted out, plus each wheel as its own square
+   * sprite. Stacking them reproduces `logo` exactly. Offsets are percentages
+   * of the logo box, so they hold at any size.
    */
-  logoStyle: 'bare',
-  blurb:
-    'Pioneering excellence in formula racing with innovative engineering and sustainable technology at IIT Bhilai.',
+  logoBase: '/images/logo-dark-base.png',
+  logoWheels: [
+    { src: '/images/wheel-front.png', left: 28.0, top: 39.826, width: 11.167 },
+    { src: '/images/wheel-rear.png', left: 58.25, top: 39.826, width: 11.167 },
+  ],
+
+  blurb: 'We design, build and race formula cars at IIT Bhilai.',
 }
 
 export const contact = {
   address: ['IIT BHILAI, 6TH LANE ROAD', 'JEVRA, CHHATTISGARH — 491002'],
-  campus: ['IIT BHILAI CAMPUS', 'CHHATTISGARH, INDIA'],
   // Both addresses below are unfilled placeholders on the current live site.
   emailGeneral: { value: 'email@iitbhilai.ac.in', tbc: true },
   emailTeam: { value: 'team@agnishul.com', tbc: true },
@@ -52,19 +54,18 @@ export const contact = {
     { label: 'INSTAGRAM', short: 'IG', href: '#', tbc: true },
     { label: 'LINKEDIN', short: 'IN', href: '#', tbc: true },
     { label: 'TWITTER', short: 'X', href: '#', tbc: true },
-    { label: 'FACEBOOK', short: 'FB', href: '#', tbc: true },
   ],
 }
 
-/** Three pillars carried over from the source home page. */
+/** The three things the team points at from the home page. */
 export const pillars = [
   {
     index: '01',
     key: 'cars',
     label: 'THE CARS',
     to: '/cars',
-    cta: 'VIEW CARS',
-    body: "Our journey began with internal combustion engines, pushing the limits of performance and efficiency. Today, we've evolved to electric powertrains, pioneering sustainable racing technology without compromising on speed and innovation.",
+    cta: 'SEE THE CARS',
+    body: 'We started on combustion engines. Now we build electric.',
   },
   {
     index: '02',
@@ -72,80 +73,48 @@ export const pillars = [
     label: 'THE TEAM',
     to: '/team',
     cta: 'MEET THE TEAM',
-    body: 'Behind every car is a dedicated team of engineers, designers, and innovators. Our members collaborate across disciplines, bringing together mechanical, electrical, and software expertise to build championship-winning formula cars.',
+    body: 'Mechanical, electrical and software students, one car.',
   },
   {
     index: '03',
     key: 'mission',
-    label: 'OUR MISSION',
+    label: 'THE MISSION',
     to: '/team',
     cta: 'LEARN MORE',
-    body: 'To push the boundaries of motorsports engineering while fostering innovation and sustainability. We aim to create future-ready engineers who lead the automotive revolution with cutting-edge technology and sustainable practices.',
+    body: 'Build engineers who can design, build and race.',
   },
 ]
 
-/** Four-stage development cycle — the spine of the Engineering section. */
+/** Four stages of how a car gets made. */
 export const cycle = [
-  {
-    step: '01',
-    name: 'DESIGN',
-    body: 'Concept, simulation and CAD. Components are modelled and validated before a single part is cut.',
-  },
-  {
-    step: '02',
-    name: 'BUILD',
-    body: 'Fabrication and assembly in-house. Mechanical, electrical and software subsystems become one vehicle.',
-  },
-  {
-    step: '03',
-    name: 'TEST',
-    body: 'Shakedown runs, telemetry capture and iteration. Data from every lap feeds back into the design loop.',
-  },
-  {
-    step: '04',
-    name: 'RACE',
-    body: 'Competition. Static and dynamic events against the best engineering institutes in the country.',
-  },
+  { step: '01', name: 'DESIGN', body: 'CAD and simulation before anything is cut.' },
+  { step: '02', name: 'BUILD', body: 'Fabricated and assembled in our own workshop.' },
+  { step: '03', name: 'TEST', body: 'Shakedown runs. Data from every lap.' },
+  { step: '04', name: 'RACE', body: 'Against the best engineering teams in India.' },
 ]
 
 export const timeline = [
-  {
-    year: '2010',
-    title: 'FOUNDATION',
-    body: 'Motorsports-IITBH established with a vision to revolutionize student formula racing. Started with passionate engineers determined to make their mark in the automotive world.',
-  },
-  {
-    year: '2015',
-    title: 'FIRST VICTORY',
-    body: 'Won Formula Bharat competition, marking our first major breakthrough. This victory validated our engineering excellence and innovative approach to racing.',
-  },
-  {
-    year: '2020',
-    title: 'ELECTRIC TRANSITION',
-    body: 'Shifted to electric vehicles, pioneering sustainable racing technology. Led the way in combining high performance with environmental responsibility.',
-  },
-  {
-    year: '2024',
-    title: 'PRESENT DAY',
-    body: 'Leading innovation in motorsports with cutting-edge designs and performance. Continuously pushing boundaries with advanced technology and engineering excellence.',
-  },
+  { year: '2010', title: 'FOUNDED', body: 'The team starts at IIT Bhilai.' },
+  { year: '2015', title: 'FIRST WIN', body: 'We win Formula Bharat.' },
+  { year: '2020', title: 'GOES ELECTRIC', body: 'The programme switches to electric powertrains.' },
+  { year: '2024', title: 'TODAY', body: 'Still designing, building and racing.' },
 ]
 
 export const teamStats = [
   { value: 4, suffix: '', label: 'SUBSYSTEMS' },
-  { value: 30, suffix: '+', label: 'ENGINEERS' },
-  { value: 1, suffix: '', label: 'SHARED VISION' },
+  { value: 30, suffix: '+', label: 'MEMBERS' },
+  { value: 3, suffix: '', label: 'CARS BUILT' },
 ]
 
 /**
- * The source site states "4 SUBSYSTEMS" but never names them.
- * The structure is built; names are deliberately left blank.
+ * The source site states "4 subsystems" but never names them.
+ * The structure is here; the names are deliberately blank.
  */
 export const subsystems = [
-  { id: 'SS-01', name: null, tbc: true },
-  { id: 'SS-02', name: null, tbc: true },
-  { id: 'SS-03', name: null, tbc: true },
-  { id: 'SS-04', name: null, tbc: true },
+  { id: '01', name: null, tbc: true },
+  { id: '02', name: null, tbc: true },
+  { id: '03', name: null, tbc: true },
+  { id: '04', name: null, tbc: true },
 ]
 
 export const coreTeam = [
@@ -156,153 +125,131 @@ export const coreTeam = [
 ]
 
 /**
- * Vehicle registry. Names and spec values below are exactly what the current
- * site publishes — they read as unfilled template defaults (CAR1/CAR2/CAR3),
- * so each is marked `tbc` and rendered with a visible TBC marker.
+ * Car registry. Names and spec values are what the current site publishes —
+ * they read as unfilled template defaults (CAR1/CAR2/CAR3), so each is marked
+ * `tbc` and shown with a visible marker.
  */
 export const cars = [
   {
     no: '01',
     code: 'CAR1',
-    name: 'MODEL CAR1',
+    name: 'CAR 1',
     tbc: true,
     powertrain: 'COMBUSTION',
-    body: 'Our flagship racing machine with cutting-edge aerodynamics and unmatched power delivery.',
+    body: 'Our first car. Built around aerodynamics and power delivery.',
     specs: [
       { k: 'ENGINE', v: 'V8 TWIN-TURBO', tbc: true },
       { k: 'TOP SPEED', v: '380 KM/H', tbc: true },
-      { k: 'DIVISION', v: 'RACING DIVISION ALPHA', tbc: true },
     ],
   },
   {
     no: '02',
     code: 'CAR2',
-    name: 'MODEL CAR2',
+    name: 'CAR 2',
     tbc: true,
     powertrain: 'ELECTRIC',
-    body: 'Revolutionary electric powertrain delivering instant torque and sustainable performance.',
+    body: 'Electric powertrain. Instant torque, no emissions.',
     specs: [
-      { k: 'ENGINE', v: 'ELEC DRIVE', tbc: true },
+      { k: 'ENGINE', v: 'ELECTRIC DRIVE', tbc: true },
       { k: 'TOP SPEED', v: '340 KM/H', tbc: true },
-      { k: 'DIVISION', v: 'ELECTRIC PERFORMANCE TEAM', tbc: true },
     ],
   },
   {
     no: '03',
     code: 'CAR3',
-    name: 'MODEL CAR3',
+    name: 'CAR 3',
     tbc: true,
     powertrain: 'HYBRID',
-    body: 'Perfect blend of combustion and electric technology for optimal efficiency.',
+    body: 'Combustion and electric together, built for efficiency.',
     specs: [
-      { k: 'ENGINE', v: 'HYBRID POWER UNIT', tbc: true },
+      { k: 'ENGINE', v: 'HYBRID UNIT', tbc: true },
       { k: 'TOP SPEED', v: '360 KM/H', tbc: true },
-      { k: 'DIVISION', v: 'INNOVATION SQUAD BETA', tbc: true },
     ],
   },
-]
-
-/** Derived from the registry above. Competition count is not published anywhere. */
-export const carStats = [
-  { value: cars.length, suffix: '', label: 'VEHICLES BUILT' },
-  { value: 3, suffix: '', label: 'POWERTRAIN TYPES' },
-  { value: null, suffix: '', label: 'COMPETITIONS', tbc: true },
 ]
 
 export const sponsorTiers = [
   {
-    tier: 'TITLE SPONSOR',
-    code: 'T1',
+    tier: 'TITLE',
+    sponsors: [{ name: 'TECHCORP INDIA' }, { name: 'AUTOTECH SOLUTIONS' }],
+  },
+  {
+    tier: 'TECHNICAL',
     sponsors: [
-      { name: 'TECHCORP INDIA', tbc: true },
-      { name: 'AUTOTECH SOLUTIONS', tbc: true },
+      { name: 'BATTERY SYSTEMS LTD' },
+      { name: 'CARBON FIBER CO' },
+      { name: 'MOTOR CONTROLS INC' },
+      { name: 'SENSOR TECH' },
     ],
   },
   {
-    tier: 'TECHNICAL PARTNER',
-    code: 'T2',
+    tier: 'SUPPORTING',
     sponsors: [
-      { name: 'BATTERY SYSTEMS LTD', tbc: true },
-      { name: 'CARBON FIBER CO', tbc: true },
-      { name: 'MOTOR CONTROLS INC', tbc: true },
-      { name: 'SENSOR TECH', tbc: true },
-    ],
-  },
-  {
-    tier: 'SUPPORTING SPONSOR',
-    code: 'T3',
-    sponsors: [
-      { name: 'ENGINEERING TOOLS', tbc: true },
-      { name: 'CAD SOFTWARE PRO', tbc: true },
-      { name: 'MACHINING WORKS', tbc: true },
-      { name: 'ELECTRONICS HUB', tbc: true },
-      { name: 'RACING TIRES CO', tbc: true },
-      { name: 'SAFETY GEAR LTD', tbc: true },
+      { name: 'ENGINEERING TOOLS' },
+      { name: 'CAD SOFTWARE PRO' },
+      { name: 'MACHINING WORKS' },
+      { name: 'ELECTRONICS HUB' },
+      { name: 'RACING TIRES CO' },
+      { name: 'SAFETY GEAR LTD' },
     ],
   },
 ]
+
+/** Every sponsor name above is still a placeholder on the live site. */
+export const sponsorsArePlaceholder = true
 
 export const news = [
   {
-    no: '001',
-    date: 'JANUARY 10, 2026',
+    no: '01',
+    date: '10 JAN 2026',
     iso: '2026-01-10',
-    title: 'TEAM UNVEILS 2026 ELECTRIC RACE CAR',
-    body: 'Our latest electric race car features a redesigned powertrain, improved aerodynamics, and cutting-edge telemetry.',
-    tag: 'VEHICLE',
+    title: 'WE UNVEIL THE 2026 ELECTRIC CAR',
+    body: 'A redesigned powertrain, better aerodynamics and new telemetry.',
+    tag: 'CAR',
   },
   {
-    no: '002',
-    date: 'DECEMBER 22, 2025',
+    no: '02',
+    date: '22 DEC 2025',
     iso: '2025-12-22',
-    title: 'PODIUM FINISH AT NATIONAL MOTORSPORTS MEET',
-    body: 'A proud moment for the team as we secured a podium finish against top engineering institutes.',
+    title: 'PODIUM AT THE NATIONAL MOTORSPORTS MEET',
+    body: 'We finished on the podium against top engineering institutes.',
     tag: 'RESULT',
   },
   {
-    no: '003',
-    date: 'DECEMBER 5, 2025',
+    no: '03',
+    date: '5 DEC 2025',
     iso: '2025-12-05',
-    title: 'NEW TECHNICAL PARTNERSHIP ANNOUNCED',
-    body: 'We welcome a new industry partner supporting our battery and drivetrain R&D.',
-    tag: 'PARTNERSHIP',
+    title: 'NEW TECHNICAL PARTNER',
+    body: 'A new industry partner joins us on battery and drivetrain work.',
+    tag: 'PARTNER',
   },
 ]
 
-export const galleryFilters = [
-  'ALL',
-  'RACING',
-  'TEAM',
-  'BEHIND THE SCENES',
-  'EVENTS',
-  'ACHIEVEMENTS',
-]
+export const galleryFilters = ['ALL', 'RACING', 'TEAM', 'WORKSHOP', 'EVENTS']
 
 /**
- * Captions carried over from the source gallery. `src` stays null until real
- * photographs are dropped into /public/images — each tile then renders the
- * photo; until then it renders a labelled technical placeholder plate rather
- * than stock imagery.
+ * Captions come from the source gallery. `src` stays null until real photos
+ * are added to /public/images — tiles then show the photo; until then they
+ * show a plain placeholder rather than stock imagery.
  */
 export const gallery = [
   { no: '01', caption: 'ON TRACK', cat: 'RACING', src: null },
   { no: '02', caption: 'TEAM WORK', cat: 'TEAM', src: null },
-  { no: '03', caption: 'WORKSHOP', cat: 'BEHIND THE SCENES', src: null },
+  { no: '03', caption: 'WORKSHOP', cat: 'WORKSHOP', src: null },
   { no: '04', caption: 'COMPETITION 2024', cat: 'EVENTS', src: null },
-  { no: '05', caption: 'VICTORY MOMENT', cat: 'ACHIEVEMENTS', src: null },
+  { no: '05', caption: 'VICTORY MOMENT', cat: 'EVENTS', src: null },
   { no: '06', caption: 'TEAM ASSEMBLY', cat: 'TEAM', src: null },
-  { no: '07', caption: 'PIT STOP', cat: 'BEHIND THE SCENES', src: null },
-  { no: '08', caption: 'TESTING DAY', cat: 'BEHIND THE SCENES', src: null },
+  { no: '07', caption: 'PIT STOP', cat: 'WORKSHOP', src: null },
+  { no: '08', caption: 'TESTING DAY', cat: 'WORKSHOP', src: null },
   { no: '09', caption: 'ENGINE CLOSE-UP', cat: 'RACING', src: null },
   { no: '10', caption: 'TRACK BATTLE', cat: 'RACING', src: null },
 ]
 
 export const nav = [
-  { label: 'INDEX', to: '/', no: '00' },
-  { label: 'VEHICLES', to: '/cars', no: '01' },
-  { label: 'CREW', to: '/team', no: '02' },
-  { label: 'PARTNERS', to: '/sponsors', no: '03' },
-  { label: 'ARCHIVE', to: '/gallery', no: '04' },
-  { label: 'DISPATCH', to: '/news', no: '05' },
+  { label: 'HOME', to: '/', no: '01' },
+  { label: 'CARS', to: '/cars', no: '02' },
+  { label: 'TEAM', to: '/team', no: '03' },
+  { label: 'SPONSORS', to: '/sponsors', no: '04' },
+  { label: 'GALLERY', to: '/gallery', no: '05' },
   { label: 'CONTACT', to: '/contact', no: '06' },
 ]

@@ -1,22 +1,11 @@
 import Hero from '../sections/Hero'
 import About from '../sections/About'
-import Engineering from '../sections/Engineering'
 import Journey from '../sections/Journey'
-import Achievements from '../sections/Achievements'
-import PartnersStrip from '../sections/PartnersStrip'
-import Join from '../sections/Join'
 import { Marquee } from '../components/ui'
 import { usePageTitle } from '../lib/usePageTitle'
 import '../sections/sections.css'
 
-const TICKER = [
-  'DESIGN → BUILD → TEST → RACE',
-  'TEAM AGNISHUL',
-  'IIT BHILAI MOTORSPORTS',
-  'BHILAI / INDIA',
-  'VEHICLE DEVELOPMENT',
-  'EST. 2010',
-]
+const TICKER = ['DESIGN → BUILD → RACE', 'TEAM AGNISHUL', 'IIT BHILAI']
 
 export default function Home() {
   usePageTitle('TEAM AGNISHUL — IIT Bhilai Motorsports')
@@ -31,11 +20,7 @@ export default function Home() {
       </div>
 
       <About />
-      <Engineering />
       <Journey />
-      <Achievements />
-      <PartnersStrip />
-      <Join />
     </>
   )
 }

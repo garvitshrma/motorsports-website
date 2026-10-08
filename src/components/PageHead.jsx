@@ -1,4 +1,3 @@
-import { Rail } from './ui'
 import './PageHead.css'
 
 /**
@@ -7,10 +6,9 @@ import './PageHead.css'
  * Shared framing — big index number, oversized title, margin rail — but each
  * page passes its own aside content, so no two read identically.
  */
-export default function PageHead({ index, kicker, title, lede, rail, aside }) {
+export default function PageHead({ index, kicker, title, lede, aside }) {
   return (
     <header className="phead on-ink blueprint">
-      {rail && <Rail side="left">{rail}</Rail>}
 
       <div className="shell phead__inner">
         <div className="phead__main">

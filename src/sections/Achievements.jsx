@@ -10,7 +10,7 @@ export default function Achievements() {
   return (
     <section className="sec sec--ink on-ink" id="dispatch">
       <div className="shell">
-        <SectionHead index="04" total="06" kicker="DISPATCH" title="FROM THE GARAGE." />
+        <SectionHead index="04" total="05" kicker="NEWS" title="LATEST." />
 
         <ul className="log">
           {news.map((item, i) => (
@@ -21,7 +21,6 @@ export default function Achievements() {
                   <span className="log__date mono-sm">{item.date}</span>
                   <span className="tag tag--ghost log__tag">{item.tag}</span>
                   <h3 className="log__title display d-sm">{item.title}</h3>
-                  <p className="log__body body">{item.body}</p>
                   <span className="log__go" aria-hidden="true">
                     →
                   </span>
@@ -32,7 +31,7 @@ export default function Achievements() {
         </ul>
 
         <Link to="/news" className="btn btn--onink log__all">
-          ALL DISPATCHES <span className="btn__arrow">→</span>
+          ALL NEWS <span className="btn__arrow">→</span>
         </Link>
       </div>
     </section>

@@ -1,0 +1,35 @@
+/* Route-change sweep. Sits on the seam under the navbar and runs once per
+   navigation, then clears itself. */
+.routebar {
+  position: fixed;
+  top: calc(26px + var(--nav-h));
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--red);
+  transform-origin: left center;
+  z-index: 96;
+  pointer-events: none;
+  animation: routebar-sweep 0.62s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes routebar-sweep {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  55% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .routebar {
+    display: none;
+  }
+}

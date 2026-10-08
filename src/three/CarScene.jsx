@@ -1,10 +1,40 @@
 import { Component, Suspense, useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ContactShadows, PerspectiveCamera } from '@react-three/drei'
+import { ContactShadows, PerspectiveCamera, useProgress } from '@react-three/drei'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import CarModel from './CarModel'
 import { CAMERA } from './carConfig'
+import { setAssetProgress } from '../lib/boot'
+
+/* -------------------------------------------------------------------------- */
+/*  Progress bridge                                                           */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Reports real loader progress to the boot bus so the loading screen can show
+ * it. Lives in this chunk because three.js does — the main bundle never
+ * imports it.
+ */
+function ProgressBridge() {
+  const { progress, active, total } = useProgress()
+
+  useEffect(() => {
+    // `active` is false *before* anything is queued as well as after it
+    // finishes, so `total` is what distinguishes "not started" from "done".
+    if (total > 0) {
+      setAssetProgress(active ? progress : 100)
+      return
+    }
+
+    // Nothing queued. Either the model is already cached, or this scene has
+    // no work to do — give it a moment, then stop holding the loading screen.
+    const id = setTimeout(() => setAssetProgress(100), 600)
+    return () => clearTimeout(id)
+  }, [progress, active, total])
+
+  return null
+}
 
 /* -------------------------------------------------------------------------- */
 /*  Studio environment                                                        */
@@ -150,6 +180,8 @@ export default function CarScene({
   const shadows = quality === 'high'
 
   return (
+    <>
+    <ProgressBridge />
     <Canvas
       dpr={quality === 'high' ? [1, 2] : [1, 1.5]}
       shadows={shadows}
@@ -192,5 +224,6 @@ export default function CarScene({
         frames={quality === 'high' ? Infinity : 1}
       />
     </Canvas>
+    </>
   )
 }

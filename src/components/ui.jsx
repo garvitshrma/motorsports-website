@@ -133,18 +133,6 @@ export function Marquee({ items, speed = 34, className = '' }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Rail — the vertical technical label pinned to a section edge.              */
-/* -------------------------------------------------------------------------- */
-
-export function Rail({ children, side = 'left' }) {
-  return (
-    <div className={`rail rail--${side}`} aria-hidden="true">
-      <span className="rail__text mono-sm">{children}</span>
-    </div>
-  )
-}
-
-/* -------------------------------------------------------------------------- */
 /*  TBC — visible marker for data the team has not published yet.              */
 /* -------------------------------------------------------------------------- */
 

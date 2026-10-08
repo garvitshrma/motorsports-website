@@ -60,7 +60,7 @@
   position: relative;
   z-index: 4;
   max-width: 640px;
-  padding-left: calc(var(--gut) + 34px);
+  padding-left: var(--gut);
   padding-right: var(--gut);
   padding-top: clamp(28px, 6vh, 72px);
 }
@@ -100,32 +100,6 @@
   flex-wrap: wrap;
   gap: 14px;
   margin-top: 34px;
-}
-
-/* ---- annotations ---------------------------------------------------------- */
-
-.hero__annot {
-  position: absolute;
-  right: var(--gut);
-  top: calc(26px + var(--nav-h) + 42px);
-  z-index: 4;
-  text-align: right;
-  display: grid;
-  gap: 10px;
-  color: var(--grey-d);
-  font-size: 0.52rem;
-}
-.hero__annot p {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-}
-.hero__annot-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--red);
-  flex: none;
 }
 
 /* ---- data strip ----------------------------------------------------------- */
@@ -204,9 +178,6 @@
   }
   .hero__copy {
     max-width: 520px;
-  }
-  .hero__annot {
-    display: none;
   }
 }
 

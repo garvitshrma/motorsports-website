@@ -11,7 +11,7 @@ export default function About() {
   return (
     <section className="sec sec--paper on-paper blueprint" id="about">
       <div className="shell">
-        <SectionHead index="01" total="06" kicker="WHO WE ARE" title={<>NOT A CLUB.<br />A DEVELOPMENT PROGRAMME.</>} />
+        <SectionHead index="01" total="02" kicker="WHO WE ARE" title="WHAT WE DO." />
 
         <div className="about__grid">
           {pillars.map((p, i) => (
@@ -29,12 +29,6 @@ export default function About() {
             </Reveal>
           ))}
 
-          {/* Margin note, set like an annotation on a drawing sheet. */}
-          <aside className="about__note" aria-hidden="true">
-            <span className="mono-sm">FIG. 1.0</span>
-            <div className="rule rule--hair" />
-            <span className="mono-sm">PROGRAMME STRUCTURE</span>
-          </aside>
         </div>
       </div>
     </section>

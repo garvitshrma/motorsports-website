@@ -34,7 +34,7 @@ export default function Contact() {
       window.location.href = `mailto:${contact.emailTeam.value}?subject=${encodeURIComponent(
         data.subject
       )}&body=${encodeURIComponent(body)}`
-      setStatus('MAIL CLIENT OPENED — NO SERVER ENDPOINT CONFIGURED')
+      setStatus('MAIL APP OPENED')
       return
     }
 
@@ -45,10 +45,10 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-      setStatus(res.ok ? 'MESSAGE RECEIVED — WE WILL BE IN TOUCH' : 'TRANSMISSION FAILED — TRY AGAIN')
+      setStatus(res.ok ? 'MESSAGE SENT' : 'COULD NOT SEND — TRY AGAIN')
       if (res.ok) e.target.reset()
     } catch {
-      setStatus('TRANSMISSION FAILED — TRY AGAIN')
+      setStatus('COULD NOT SEND — TRY AGAIN')
     } finally {
       setSending(false)
     }
@@ -58,17 +58,16 @@ export default function Contact() {
     <>
       <PageHead
         index="06"
-        kicker="GET IN TOUCH"
-        rail="COMMS / INBOUND"
-        title={<>TALK TO<br />THE TEAM.</>}
-        lede="Sponsorship, collaboration, or joining the crew — reach out through any of these channels."
+        kicker="CONTACT"
+        title="TALK TO US."
+        lede="Sponsorship, collaboration, or joining the team."
       />
 
       <section className="sec sec--paper on-paper blueprint">
         <div className="shell contact">
           {/* --- channels ---------------------------------------------------- */}
           <div className="contact__info">
-            <h2 className="display d-md">CONTACT INFORMATION</h2>
+            <h2 className="display d-md">WHERE TO FIND US</h2>
 
             <dl className="info">
               <div className="info__row">
@@ -123,8 +122,7 @@ export default function Contact() {
           {/* --- form -------------------------------------------------------- */}
           <form className="cform slab" onSubmit={onSubmit}>
             <div className="cform__head">
-              <h2 className="display d-sm">SEND US A MESSAGE</h2>
-              <span className="mono-sm red">REQ. FORM 01</span>
+              <h2 className="display d-sm">SEND A MESSAGE</h2>
             </div>
 
             {FIELDS.map((f) => (
@@ -155,7 +153,7 @@ export default function Contact() {
               </button>
               {!FORM_ENDPOINT && (
                 <span className="mono-sm cform__note">
-                  NO SERVER ENDPOINT CONFIGURED — OPENS YOUR MAIL CLIENT
+                  OPENS YOUR MAIL APP
                 </span>
               )}
             </div>

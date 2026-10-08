@@ -58,69 +58,10 @@
   gap: 12px;
 }
 
-.nav__badge {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  flex: none;
-  font-family: var(--f-display);
-  font-weight: 900;
-  font-stretch: 62%;
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-/* The logo fills the badge box without distortion, whatever its aspect ratio. */
-.nav__badge img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.nav__logo {
+  height: clamp(34px, 3.8vw, 52px);
+  width: auto;
   display: block;
-}
-
-/* Fallback lettermark, and the knocked-out logo variant. */
-.nav__badge--red {
-  background: var(--red);
-  color: #fff;
-}
-
-/* A light or white logo standing on the dark bar — slightly larger, since it
-   has no block behind it to give it presence. */
-.nav__badge--bare {
-  width: 40px;
-  height: 40px;
-}
-
-/* Off-white plate: guarantees contrast for dark or full-colour marks. */
-.nav__badge--plate {
-  background: var(--paper);
-  padding: 4px;
-  width: 38px;
-  height: 38px;
-}
-
-.nav__badge--red img {
-  padding: 4px;
-}
-
-.nav__wordmark {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-}
-.nav__wordmark b {
-  font-size: 1.28rem;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  font-weight: 900;
-  font-stretch: 62%;
-}
-.nav__wordmark em {
-  font-style: normal;
-  color: var(--grey-d);
-  font-size: 0.48rem;
-  margin-top: 3px;
 }
 
 /* ---- links --------------------------------------------------------------- */
@@ -322,7 +263,7 @@
     font-size: 0.46rem;
     letter-spacing: 0.14em;
   }
-  .nav__wordmark b {
-    font-size: 1.1rem;
+  .nav__logo {
+    height: 32px;
   }
 }

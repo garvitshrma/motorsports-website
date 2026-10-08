@@ -13,7 +13,7 @@ import './pages.css'
  * plate — no stock imagery stands in for the team's own work.
  */
 export default function Archive() {
-  usePageTitle('ARCHIVE — Team Agnishul')
+  usePageTitle('GALLERY — Team Agnishul')
   const [filter, setFilter] = useState('ALL')
 
   const shown = useMemo(
@@ -25,15 +25,13 @@ export default function Archive() {
     <>
       <PageHead
         index="04"
-        kicker="PHOTOGRAPHIC ARCHIVE"
-        rail="ARCHIVE / CONTACT SHEET"
-        title={<>MOMENTS THAT<br />DEFINE THE RUN.</>}
-        lede="From intense track battles to behind-the-scenes teamwork, the visual record of the programme."
+        kicker="GALLERY"
+        title="ON TRACK."
         aside={
           <ul className="phead__stats">
             <li>
-              <b className="display">{String(gallery.length).padStart(2, '0')}</b>
-              <span className="mono-sm">FRAMES</span>
+              <b className="display">{gallery.length}</b>
+              <span className="mono-sm">PHOTOS</span>
             </li>
           </ul>
         }
@@ -41,7 +39,7 @@ export default function Archive() {
 
       <section className="sec sec--paper on-paper">
         <div className="shell">
-          <div className="filters" role="tablist" aria-label="Filter archive">
+          <div className="filters" role="tablist" aria-label="Filter photos">
             {galleryFilters.map((f) => (
               <button
                 key={f}
@@ -70,7 +68,7 @@ export default function Archive() {
                     ) : (
                       <div className="frame__empty">
                         <span className="frame__cross" aria-hidden="true" />
-                        <span className="mono-sm">IMAGE PENDING</span>
+                        <span className="mono-sm">PHOTO SOON</span>
                       </div>
                     )}
                     <span className="frame__no mono-sm">{g.no}</span>
@@ -86,7 +84,7 @@ export default function Archive() {
 
           {shown.length === 0 && (
             <p className="body" style={{ marginTop: 34 }}>
-              No frames filed under this category yet.
+              Nothing here yet.
             </p>
           )}
         </div>

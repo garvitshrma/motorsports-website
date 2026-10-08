@@ -13,7 +13,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
   gap: 30px 48px;
-  padding-left: calc(var(--gut) + 34px);
+  padding-left: var(--gut);
 }
 
 .phead__title {

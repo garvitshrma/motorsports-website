@@ -1,5 +1,5 @@
-import { Reveal, SectionHead, Tbc } from '../components/ui'
-import { cycle, subsystems } from '../data/site'
+import { Reveal, SectionHead } from '../components/ui'
+import { cycle } from '../data/site'
 
 /**
  * The development cycle. This is the section that explains *how* the team
@@ -10,12 +10,7 @@ export default function Engineering() {
   return (
     <section className="sec sec--ink on-ink blueprint" id="engineering">
       <div className="shell">
-        <SectionHead
-          index="02"
-          total="06"
-          kicker="R&D / PROCESS"
-          title={<>THE LOOP<br />NEVER CLOSES.</>}
-        />
+        <SectionHead index="02" total="05" kicker="HOW WE WORK" title="FOUR STEPS." />
 
         <div className="cycle">
           {cycle.map((s, i) => (
@@ -35,29 +30,6 @@ export default function Engineering() {
           ))}
         </div>
 
-        {/* Subsystems: the team publishes the count, not the names. The slots
-            exist and are visibly unfilled rather than invented. */}
-        <div className="subs">
-          <div className="subs__head">
-            <h3 className="mono">SUBSYSTEM BREAKDOWN</h3>
-            <span className="mono-sm dim">04 DIVISIONS</span>
-          </div>
-          <div className="subs__grid">
-            {subsystems.map((s) => (
-              <div className="subs__cell plate plate--flat" key={s.id}>
-                <span className="subs__id mono-sm">{s.id}</span>
-                <span className="subs__name">
-                  {s.name ?? (
-                    <>
-                      <span className="field-empty">AWAITING NAME</span>
-                      <Tbc />
-                    </>
-                  )}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   )

@@ -9,12 +9,7 @@ export default function Journey() {
   return (
     <section className="sec sec--paper on-paper" id="journey">
       <div className="shell">
-        <SectionHead
-          index="03"
-          total="06"
-          kicker="LOGBOOK"
-          title={<>FOUNDATION<br />TO PRESENT DAY.</>}
-        />
+        <SectionHead index="02" total="02" kicker="TIMELINE" title="HOW WE GOT HERE." />
 
         <ol className="tl">
           {timeline.map((entry, i) => (

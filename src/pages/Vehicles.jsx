@@ -1,7 +1,6 @@
 import PageHead from '../components/PageHead'
-import VehicleDrawing from '../three/VehicleDrawing'
-import { Counter, Reveal, Tbc } from '../components/ui'
-import { carStats, cars } from '../data/site'
+import { Reveal, Tbc } from '../components/ui'
+import { cars } from '../data/site'
 import { usePageTitle } from '../lib/usePageTitle'
 import './pages.css'
 
@@ -10,29 +9,20 @@ import './pages.css'
  * the page reads as a document rather than a repeating grid of cards.
  */
 export default function Vehicles() {
-  usePageTitle('VEHICLES — Team Agnishul')
+  usePageTitle('CARS — Team Agnishul')
 
   return (
     <>
       <PageHead
         index="01"
-        kicker="VEHICLE REGISTRY"
-        rail="UNIT 01 — VEHICLE DEVELOPMENT"
-        title={<>WHAT WE<br />PUT ON TRACK.</>}
-        lede="Engineering excellence meets racing passion. Each vehicle represents years of innovation, testing, and dedication."
+        kicker="CARS"
+        title="WHAT WE RACE."
         aside={
           <ul className="phead__stats">
-            {carStats.map((s) => (
-              <li key={s.label}>
-                <b className="display">
-                  <Counter value={s.value} suffix={s.suffix} />
-                </b>
-                <span className="mono-sm">
-                  {s.label}
-                  {s.tbc && <Tbc />}
-                </span>
-              </li>
-            ))}
+            <li>
+              <b className="display">{cars.length}</b>
+              <span className="mono-sm">CARS BUILT</span>
+            </li>
           </ul>
         }
       />
@@ -53,7 +43,6 @@ export default function Vehicles() {
                       {car.name}
                       {car.tbc && <Tbc label="NAME TBC" />}
                     </h2>
-                    <span className="mono-sm dim">REF. {car.code}</span>
                   </div>
 
                   <p className="body veh__body">{car.body}</p>
@@ -79,14 +68,6 @@ export default function Vehicles() {
             </Reveal>
           ))}
 
-          {/* One elevation drawing for the registry as a whole. */}
-          <div className="veh__plate slab">
-            <div className="veh__plate-head">
-              <span className="mono-sm">GENERAL ARRANGEMENT — SIDE ELEVATION</span>
-              <span className="mono-sm red">DWG. 01</span>
-            </div>
-            <VehicleDrawing />
-          </div>
         </div>
       </section>
     </>
