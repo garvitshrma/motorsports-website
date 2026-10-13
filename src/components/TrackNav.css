@@ -1,0 +1,160 @@
+/* Fixed circuit rail. Hidden below the width where it would crowd the content;
+   the top navbar remains the primary navigation at every size. */
+
+.track {
+  position: fixed;
+  right: 0;
+  /* Parked below the navbar rather than centred on the viewport, so the first
+     node and its label are never tucked under the header. */
+  top: calc(26px + var(--nav-h) + 44px);
+  bottom: 54px;
+  width: var(--rail-w);
+  z-index: 60;
+  pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 1340px) {
+  .track {
+    display: block;
+  }
+}
+
+.track__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ---- surface ------------------------------------------------------------- */
+
+.track__verge,
+.track__road,
+.track__line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.track__verge {
+  stroke: #34343b;
+  stroke-width: 28;
+}
+
+.track__road {
+  stroke: #17171b;
+  stroke-width: 22;
+}
+
+.track__line {
+  stroke: var(--red);
+  stroke-width: 2.6;
+  opacity: 0.9;
+}
+
+/* ---- progress marker ----------------------------------------------------- */
+
+.track__marker-dot {
+  fill: #fff;
+}
+.track__marker-halo {
+  fill: var(--red);
+  opacity: 0.3;
+}
+
+/* ---- nodes --------------------------------------------------------------- */
+
+.track__node {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.track__disc {
+  fill: var(--ink);
+  stroke: #55555e;
+  stroke-width: 2;
+  transition: fill 0.18s ease, stroke 0.18s ease;
+}
+
+.track__no {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  fill: var(--grey);
+  transition: fill 0.18s ease;
+}
+
+.track__label {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  fill: var(--grey);
+  transition: fill 0.18s ease;
+}
+
+/* passed */
+.track__node.is-done .track__disc {
+  stroke: var(--red);
+}
+.track__node.is-done .track__no {
+  fill: var(--paper);
+}
+
+/* current */
+.track__node.is-on .track__disc {
+  fill: var(--red);
+  stroke: #fff;
+}
+.track__node.is-on .track__no {
+  fill: #fff;
+}
+.track__node.is-on .track__label {
+  fill: var(--paper);
+}
+
+.track__pulse {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 2;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: track-pulse 2.4s ease-out infinite;
+}
+
+@keyframes track-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* hover */
+.track__node:hover .track__disc {
+  stroke: var(--paper);
+}
+.track__node:hover .track__label,
+.track__node:hover .track__no {
+  fill: var(--paper);
+}
+
+.track__node:focus-visible .track__disc {
+  stroke: var(--red);
+  stroke-width: 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track__pulse {
+    animation: none;
+    opacity: 0.4;
+  }
+  .track__disc,
+  .track__no,
+  .track__label {
+    transition: none;
+  }
+}

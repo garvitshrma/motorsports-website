@@ -14,7 +14,7 @@ export const CAR = {
    * measures TARGET_LENGTH world units. This keeps framing identical no matter
    * what units the .glb was authored in.
    */
-  TARGET_LENGTH: 4.2,
+  TARGET_LENGTH: 5.5,
 
   /** Base yaw, radians. 0 = whatever the model calls forward. -0.42 gives a 3/4 front. */
   BASE_YAW: -0.42,
@@ -29,9 +29,11 @@ export const CAR = {
   /** Nudge the car off the layout centre so it breaks the grid to the right. */
   OFFSET: [0.18, 0, 0],
 
-  /** How far the car leans toward the cursor. Restrained on purpose. */
-  POINTER_YAW: 0.1,
-  POINTER_PITCH: 0.035,
+  /** How far the car turns toward the cursor. */
+  POINTER_YAW: 0.3,
+  POINTER_PITCH: 0.085,
+  /** A little roll as well, so the car banks rather than just swivelling. */
+  POINTER_ROLL: 0.055,
 
   /** Idle breathing — a parked car on a turntable that has almost stopped. */
   IDLE_AMPLITUDE: 0.022,
@@ -55,5 +57,5 @@ export const CAMERA = {
   /** Camera settles lower and closer as the hero scrolls away. */
   SCROLL_DOLLY: -0.85,
   SCROLL_RISE: -0.35,
-  POINTER_SWAY: 0.28,
+  POINTER_SWAY: 0.52,
 }

@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
-import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { useAnimations, useGLTF } from '@react-three/drei'
 import { CAR, MODEL_URL } from './carConfig'
+import { normaliseModel } from './normaliseModel'
 
 /**
  * The vehicle itself.
@@ -23,15 +23,7 @@ export default function CarModel({ scrollRef, pointerRef, quality, reduced = fal
 
   // --- normalise: centre on origin, sit on the ground plane, scale to fit ----
   useLayoutEffect(() => {
-    const box = new THREE.Box3().setFromObject(model)
-    const size = box.getSize(new THREE.Vector3())
-    const centre = box.getCenter(new THREE.Vector3())
-
-    const longest = Math.max(size.x, size.z) || 1
-    const scale = CAR.TARGET_LENGTH / longest
-
-    model.position.set(-centre.x, -box.min.y, -centre.z)
-    model.scale.setScalar(scale)
+    normaliseModel(model, CAR.TARGET_LENGTH)
 
     model.traverse((node) => {
       if (!node.isMesh) return
@@ -79,9 +71,12 @@ export default function CarModel({ scrollRef, pointerRef, quality, reduced = fal
     const targetYaw =
       CAR.BASE_YAW + CAR.SCROLL_YAW * scroll + px * CAR.POINTER_YAW + idle
     const targetPitch = CAR.PITCH + py * CAR.POINTER_PITCH
+    // Bank into the turn: roll opposes yaw, the way a car leans through a bend.
+    const targetRoll = CAR.ROLL - px * (reduced ? 0 : CAR.POINTER_ROLL)
 
     outer.current.rotation.y += (targetYaw - outer.current.rotation.y) * damp
     outer.current.rotation.x += (targetPitch - outer.current.rotation.x) * damp
+    outer.current.rotation.z += (targetRoll - outer.current.rotation.z) * damp
   })
 
   return (

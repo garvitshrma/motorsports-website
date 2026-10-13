@@ -118,20 +118,53 @@ Drop the team's model at:
 public/models/car.glb
 ```
 
-> **File size matters more than anything else here.** The current `car.glb` is
-> **106 MB**, and `public/` also holds unreferenced `car2.glb` (16 MB) and
-> `car3.glb` (25 MB) — so `npm run build` currently produces a **148 MB**
-> deploy. Everything in `public/` ships whether the code references it or not.
-> Compress the model (Draco or Meshopt, plus resized textures) and delete the
-> spares; 2–5 MB is a realistic target and the loading screen then has
-> something it can actually finish.
+The shipped `car.glb` is **optimised to 1.9 MB** (down from 106 MB). Textures
+were the whole problem — 88 MB of the original was PNG/JPEG maps, against only
+17 MB of geometry.
+
+Re-run the pipeline after replacing the model (`@gltf-transform/cli` is a
+devDependency):
+
+```bash
+npx gltf-transform optimize <source>.glb public/models/car.glb   --compress meshopt --texture-compress webp --texture-size 1024 --simplify true
+```
+
+| Step | Effect |
+| --- | --- |
+| `--texture-compress webp --texture-size 1024` | 88 MB of PNG → 0.7 MB of WebP |
+| `--simplify true` | 329k → 136k triangles |
+| `--compress meshopt` | quantises and packs the remaining geometry |
+| (join/dedup) | 16 meshes → 5, so fewer draw calls |
+
+All three extensions it writes — `EXT_meshopt_compression`, `EXT_texture_webp`
+and `KHR_mesh_quantization` — decode **without a CDN**: drei wires three-stdlib's
+`MeshoptDecoder` by default, and three handles the other two natively. Draco was
+deliberately avoided because drei fetches its decoder from a Google CDN.
+
+Raise `--texture-size` to 2048 if the car looks soft on large displays; it costs
+little now that the maps are WebP.
+
+> The original 106 MB asset is still in git history if you need it back
+> (`git checkout 3697b8e -- public/models/car.glb`). `public/models/` also holds
+> unreferenced `car2.glb` (16 MB) and `car3.glb` (25 MB) — everything in
+> `public/` ships whether the code imports it or not, so those 41 MB are still
+> in every deploy.
 
 Nothing else needs to change. The site detects the file at runtime and swaps
 from the fallback drawing to the live scene.
 
-**Geometry is never modified** — the model is only centred, seated on the ground
-plane, and uniformly scaled so its longest horizontal axis is a known size, which
-keeps framing consistent whatever units the export used.
+**Geometry is never modified at runtime** — the model is only centred, seated on
+the ground plane, and uniformly scaled so its longest horizontal axis is a known
+size, which keeps framing consistent whatever units the export used.
+
+That normalisation lives in [`normaliseModel`](src/three/normaliseModel.js) and
+is deliberately **idempotent**: it resets the transform before measuring.
+`Box3.setFromObject` reports world-space bounds, so measuring a model that has
+already been scaled folds the old scale into the new one — and React StrictMode
+runs layout effects twice on every mount. That shipped once as "the car is
+sometimes small, sometimes big", alternating between the right size and double
+it. The offsets are also multiplied by the scale, since three applies
+translation in parent units, outside the scale.
 
 All tuning lives in [`src/three/carConfig.js`](src/three/carConfig.js):
 
@@ -182,6 +215,65 @@ React re-render.
 The fallback is a real drawing ([`src/three/VehicleDrawing.jsx`](src/three/VehicleDrawing.jsx)),
 not a stand-in 3D object — an unfinished spec sheet is honest in a way a grey box
 is not. It is also reused as the watermark on the recruitment section and 404.
+
+---
+
+## Circuit rail and chequered flag
+
+**[`TrackNav`](src/components/TrackNav.jsx)** is the page navigation drawn as a
+circuit: a winding tarmac path with a racing line, a numbered node per page, and
+a white marker that runs from the current node toward the next one as you scroll.
+
+Node positions are *measured* off the SVG path with `getPointAtLength`, not
+hard-coded — edit the `TRACK` path string and the nodes follow it. The nodes are
+drawn **inside** the SVG rather than as positioned HTML over it: an HTML overlay
+has to express path coordinates as percentages of the container, which only
+agrees with the drawing while the container's aspect ratio matches the viewBox.
+Any other shape and `preserveAspectRatio` re-centres the artwork, leaving the
+nodes floating beside the track. It is fixed to
+the right edge and appears only at 1340px and up; above that breakpoint `.shell`
+(and the two full-bleed strips) reserve `--rail-w` on the right so nothing ever
+sits underneath it. The top navbar stays the primary navigation at every size.
+
+**[`RaceFlag`](src/components/RaceFlag.jsx)** is the chequered pennant. The cloth
+is one SVG path filled white and *stroked* with a chequer pattern — that gives
+the banded border without hand-building an inset outline. The whole cloth group
+runs through a turbulence displacement filter whose frequency is animated, so it
+ripples like fabric rather than just swaying, and the logo inside the group
+ripples with it. It uses `logoLight` (the original colours), since the flag field
+is white.
+
+Both honour `prefers-reduced-motion`: the ripple filter and sway are dropped, and
+the rail's transitions stop.
+
+---
+
+## Legibility
+
+Small print is the easiest thing to get wrong on a dark, high-contrast layout,
+so colour and type size are both driven by tokens rather than set per component:
+
+- `--grey` / `--grey-d` / `--grey-l` are defined for the **ink** ground and
+  redefined inside `.on-paper`. The old `--grey-d` was 2.4:1 on `#0b0b0b` — far
+  under AA — which is why so many labels were hard to read.
+- `--red-text` is a separate token from `--red`. The brand red clears neither
+  ground as small text (3.96:1 on ink, 4.21:1 on paper), so text uses a brighter
+  red on ink and a darker one on paper. Bars, fills and borders keep `--red`.
+- No text renders below ~10px; the mono label scale sits at 0.7–0.74rem.
+
+Every text node on every route was measured against its own computed background:
+**0 failures** at AA (4.5:1 for body, 3:1 for large).
+
+---
+
+## Spacing
+
+Whitespace is driven by a few tokens rather than per-component values, so it can
+be opened up or tightened in one place:
+
+- `--gut` — the page gutter, `clamp(22px, 5vw, 88px)`
+- `--rail-w` — right-hand gutter reserved for the circuit rail
+- `.sec` vertical rhythm, `clamp(92px, 11.5vw, 210px)`
 
 ---
 

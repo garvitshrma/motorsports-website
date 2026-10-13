@@ -45,7 +45,7 @@
   align-items: center;
   gap: 10px;
   color: var(--grey-d);
-  font-size: 0.5rem;
+  font-size: 0.64rem;
   text-align: right;
   max-width: min(62%, 380px);
   justify-content: flex-end;

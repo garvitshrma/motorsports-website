@@ -85,6 +85,23 @@ export default function CarStage({ progressTargetRef }) {
   useEffect(() => {
     const el = wrap.current
     if (!el) return
+
+    /*
+     * Seed from a direct measurement first. The observer is the right tool for
+     * tracking visibility over time, but relying on it for the *initial* state
+     * means a missed or delayed first callback leaves the scene mounted with
+     * frameloop="never" — a canvas that never draws a single frame. Measuring
+     * up front makes the first paint independent of that.
+     */
+    const measure = () => {
+      const r = el.getBoundingClientRect()
+      return r.bottom > -200 && r.top < window.innerHeight + 200 && r.width > 0
+    }
+    if (measure()) {
+      setInView(true)
+      setEverSeen(true)
+    }
+
     const io = new IntersectionObserver(
       ([entry]) => {
         setInView(entry.isIntersecting)

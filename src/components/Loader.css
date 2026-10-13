@@ -155,11 +155,11 @@
   justify-content: space-between;
   gap: 16px;
   color: var(--grey-d);
-  font-size: 0.5rem;
+  font-size: 0.64rem;
 }
 
 .loader__pct {
-  color: var(--red);
+  color: var(--red-text);
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
 }

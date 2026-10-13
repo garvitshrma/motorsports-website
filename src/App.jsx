@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Loader from './components/Loader'
+import TrackNav from './components/TrackNav'
 import Home from './pages/Home'
 import Vehicles from './pages/Vehicles'
 import Crew from './pages/Crew'
@@ -86,6 +87,7 @@ export default function App() {
         SKIP TO CONTENT
       </a>
       <Navbar />
+      <TrackNav />
       <main id="main">
         <AnimatedRoutes />
       </main>

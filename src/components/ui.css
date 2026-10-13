@@ -1,7 +1,7 @@
 /* ---- section head -------------------------------------------------------- */
 
 .sechead__title {
-  margin-top: 14px;
+  margin-top: 20px;
 }
 
 /* ---- marquee ------------------------------------------------------------- */
@@ -24,8 +24,8 @@
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
-  font-size: 0.62rem;
-  letter-spacing: 0.28em;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
 }
 
 .marquee__sep {
@@ -53,4 +53,11 @@
   font-family: var(--f-mono);
   font-size: 0.72em;
   letter-spacing: 0.14em;
+}
+
+/* Keep the full-bleed ticker clear of the fixed circuit rail. */
+@media (min-width: 1340px) {
+  .marquee {
+    padding-right: var(--rail-w);
+  }
 }

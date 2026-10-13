@@ -6,7 +6,7 @@
 
 .sec {
   position: relative;
-  padding-block: clamp(62px, 8.5vw, 138px);
+  padding-block: clamp(92px, 11.5vw, 210px);
 }
 
 .sec--paper {
@@ -26,8 +26,8 @@
 .about__grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 26px;
-  margin-top: clamp(40px, 5vw, 74px);
+  gap: 40px;
+  margin-top: clamp(56px, 6.5vw, 104px);
 }
 
 .about__cell--1 {
@@ -37,7 +37,7 @@
 .about__cell--2 {
   grid-column: 8 / span 5;
   grid-row: 1;
-  margin-top: 72px;
+  margin-top: 104px;
 }
 .about__cell--3 {
   grid-column: 3 / span 6;
@@ -56,7 +56,7 @@
 }
 
 .pillar {
-  padding: 26px 26px 22px;
+  padding: 36px 34px 30px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -78,11 +78,11 @@
 .pillar__idx {
   font-size: 2.6rem;
   line-height: 0.8;
-  color: var(--red);
+  color: var(--red-text);
 }
 .pillar__label {
   font-size: 0.7rem;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
 }
 .pillar__body {
   margin-top: 18px;
@@ -93,13 +93,13 @@
   align-items: center;
   gap: 10px;
   margin-top: 22px;
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   color: var(--ink);
   border-top: 2px solid var(--ink);
   padding-top: 14px;
 }
 .pillar__cta:hover {
-  color: var(--red);
+  color: var(--red-text);
 }
 
 /* ===========================  02 — ENGINEERING  =========================== */
@@ -113,7 +113,7 @@
 
 .cycle__step {
   position: relative;
-  padding: 26px 26px 34px;
+  padding: 34px 32px 44px;
   border-right: 1px solid var(--ink-4);
 }
 .cycle__step:last-child {
@@ -133,7 +133,7 @@
 
 .cycle__no {
   color: var(--grey-d);
-  font-size: 0.52rem;
+  font-size: 0.64rem;
 }
 .cycle__name {
   margin: 10px 0 12px;
@@ -142,7 +142,7 @@
   position: absolute;
   right: -10px;
   top: 62px;
-  color: var(--red);
+  color: var(--red-text);
   font-size: 1.1rem;
   background: var(--ink);
   padding: 2px 0;
@@ -152,7 +152,7 @@
 /* ===========================  03 — JOURNEY  =============================== */
 
 .tl {
-  margin-top: clamp(36px, 4.5vw, 64px);
+  margin-top: clamp(50px, 6vw, 88px);
   border-top: 2px solid rgba(11, 11, 11, 0.2);
 }
 
@@ -160,7 +160,7 @@
   display: grid;
   grid-template-columns: minmax(160px, 250px) 34px minmax(0, 1fr);
   gap: 0 30px;
-  padding-block: clamp(30px, 3.6vw, 52px);
+  padding-block: clamp(42px, 4.8vw, 74px);
   border-bottom: 1px solid rgba(11, 11, 11, 0.2);
 }
 
@@ -194,8 +194,8 @@
 }
 
 .tl__seq {
-  color: var(--red);
-  font-size: 0.52rem;
+  color: var(--red-text);
+  font-size: 0.64rem;
 }
 .tl__title {
   margin: 8px 0 12px;
@@ -228,14 +228,14 @@
 
 .log__no {
   grid-area: no;
-  color: var(--red);
-  font-size: 0.6rem;
+  color: var(--red-text);
+  font-size: 0.68rem;
   padding-top: 3px;
 }
 .log__date {
   grid-area: meta;
   color: var(--grey-d);
-  font-size: 0.52rem;
+  font-size: 0.64rem;
 }
 .log__tag {
   grid-area: meta;
@@ -248,7 +248,7 @@
   transition: color 0.15s ease;
 }
 .log__row:hover .log__title {
-  color: var(--red);
+  color: var(--red-text);
 }
 .log__body {
   grid-area: body;
@@ -262,7 +262,7 @@
   transition: transform 0.15s ease, color 0.15s ease;
 }
 .log__row:hover .log__go {
-  color: var(--red);
+  color: var(--red-text);
   transform: translateX(5px);
 }
 
@@ -291,7 +291,7 @@
   align-self: start;
 }
 .tier__label h3 {
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   letter-spacing: 0.2em;
   font-weight: 400;
 }
@@ -307,7 +307,7 @@
   background: var(--paper-2);
   padding: 11px 14px;
   font-family: var(--f-mono);
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   letter-spacing: 0.12em;
 }
 .tiers__cta {
@@ -317,11 +317,11 @@
 /* One line instead of a marker on every single sponsor. */
 .tiers__note {
   margin-top: 22px;
-  color: var(--red);
+  color: var(--red-text);
   border: 2px solid var(--red);
   padding: 9px 12px;
   display: inline-block;
-  font-size: 0.5rem;
+  font-size: 0.64rem;
 }
 
 /* ===========================  06 — JOIN  ================================== */
@@ -377,11 +377,11 @@
 .join__stats b {
   font-size: clamp(2rem, 4vw, 3.4rem);
   line-height: 0.9;
-  color: var(--red);
+  color: var(--red-text);
 }
 .join__stats span {
   color: var(--grey-d);
-  font-size: 0.5rem;
+  font-size: 0.64rem;
 }
 
 .join__actions {
@@ -494,5 +494,34 @@
   .tiers__cta {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* ===========================  FLAG BAND  ================================== */
+
+/* A breathing moment between the hero and the document: the chequered pennant
+   sitting in a lot of air, offset left rather than centred. */
+.flagband {
+  background: var(--ink);
+  color: var(--paper);
+  border-top: var(--bw-thick) solid var(--paper);
+  padding-block: clamp(80px, 10vw, 180px);
+  overflow: hidden;
+}
+
+.flagband__inner {
+  display: grid;
+  justify-items: start;
+}
+
+.flagband .flag {
+  max-width: min(560px, 100%);
+  margin-left: clamp(0px, 4vw, 90px);
+}
+
+@media (max-width: 720px) {
+  .flagband .flag {
+    max-width: 100%;
+    margin-left: 0;
   }
 }

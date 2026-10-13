@@ -12,8 +12,8 @@
 .foot__grid {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: 44px 34px;
-  padding-block: clamp(44px, 5.5vw, 80px);
+  gap: 60px 48px;
+  padding-block: clamp(64px, 7vw, 112px);
 }
 
 .foot__brand h2 {
@@ -28,7 +28,7 @@
 
 .foot__h {
   color: var(--grey-d);
-  font-size: 0.52rem;
+  font-size: 0.64rem;
   padding-bottom: 10px;
   border-bottom: 2px solid var(--ink-4);
   margin-bottom: 14px;
@@ -40,7 +40,7 @@
   gap: 10px;
   padding: 7px 0;
   font-family: var(--f-mono);
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--grey);
@@ -55,7 +55,7 @@
   transform: translateX(4px);
 }
 .foot__link:hover i {
-  color: var(--red);
+  color: var(--red-text);
 }
 
 .foot__addr {
@@ -63,7 +63,7 @@
   gap: 7px;
   font-style: normal;
   font-family: var(--f-mono);
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   letter-spacing: 0.1em;
   color: var(--grey);
   line-height: 1.6;
@@ -82,7 +82,7 @@
   padding: 8px 11px;
   color: var(--grey);
   font-family: var(--f-mono);
-  font-size: 0.5rem;
+  font-size: 0.64rem;
   letter-spacing: 0.18em;
   transition: color 0.14s ease, border-color 0.14s ease;
 }
@@ -106,7 +106,7 @@
   padding: 16px var(--gut);
   border-top: var(--bw) solid var(--paper);
   color: var(--grey-d);
-  font-size: 0.5rem;
+  font-size: 0.64rem;
 }
 .foot__bar-right {
   display: inline-flex;

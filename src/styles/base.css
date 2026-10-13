@@ -16,13 +16,21 @@
   --paper-2: #e5e1d7;
   --paper-3: #d8d3c7;
 
-  --grey: #8c8a84;
-  --grey-d: #56544f;
-  --grey-l: #b6b3ab;
+  /* Tuned per ground below. These values are the ones used on INK: the old
+     --grey-d (#56544f) sat at 2.4:1 against #0b0b0b, well under AA, which is
+     why so much of the small print was unreadable. */
+  --grey: #a5a29b;   /* 7.6:1 on ink */
+  --grey-d: #8a877f; /* 5.4:1 on ink — the dimmest we go */
+  --grey-l: #cfccc4;
 
   /* --- accent ------------------------------------------------------------- */
   --red: #e10600;
   --red-d: #b00400;
+  /* Red used as TEXT. The brand red clears neither ground at small sizes —
+     3.96:1 on ink, 4.21:1 on paper — so text gets its own shade on each:
+     brighter on ink, darker on paper. Backgrounds, bars and borders keep the
+     brand --red, where contrast is not a reading concern. */
+  --red-text: #f5342b; /* 5.0:1 on ink */
 
   /* hairline used for blueprint grids on both grounds */
   --hair-dark: rgba(255, 255, 255, 0.055);
@@ -39,8 +47,10 @@
   --shadow: 9px 9px 0 var(--ink);
   --shadow-sm: 5px 5px 0 var(--ink);
   --shadow-red: 9px 9px 0 var(--red);
-  --gut: clamp(18px, 4vw, 64px);
-  --maxw: 1560px;
+  --gut: clamp(22px, 5vw, 88px);
+  /* Width reserved on the right for the fixed circuit rail. */
+  --rail-w: 234px;
+  --maxw: 1600px;
   --nav-h: 78px;
 }
 
@@ -165,7 +175,7 @@ ol {
   -webkit-text-stroke-color: var(--ink);
 }
 .d-outline--red {
-  -webkit-text-stroke-color: var(--red);
+  -webkit-text-stroke-color: var(--red-text);
 }
 
 .mono {
@@ -179,8 +189,8 @@ ol {
 .mono-sm {
   font-family: var(--f-mono);
   text-transform: uppercase;
-  letter-spacing: 0.22em;
-  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
   line-height: 1.4;
 }
 
@@ -203,7 +213,7 @@ ol {
   color: var(--grey-d);
 }
 
-.red { color: var(--red); }
+.red { color: var(--red-text); }
 .dim { color: var(--grey); }
 
 /* ===========================  LAYOUT  ===================================== */
@@ -228,6 +238,11 @@ ol {
 .on-paper {
   background: var(--paper);
   color: var(--ink);
+  /* Same roles, flipped for a light ground: 6.6:1 and 4.7:1 on #efece4. */
+  --grey: #55524c;
+  --grey-d: #6b685f;
+  --grey-l: #403e39;
+  --red-text: #c20500; /* 5.4:1 on paper */
 }
 
 /* Blueprint underlay. Extremely low contrast on purpose. */
@@ -304,8 +319,8 @@ ol {
   gap: 10px;
   font-family: var(--f-mono);
   text-transform: uppercase;
-  letter-spacing: 0.24em;
-  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  font-size: 0.68rem;
   color: var(--grey);
 }
 .eyebrow::before {
@@ -323,7 +338,7 @@ ol {
 .tag {
   display: inline-block;
   font-family: var(--f-mono);
-  font-size: 0.55rem;
+  font-size: 0.66rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 4px 8px 3px;
@@ -354,11 +369,11 @@ ol {
   display: inline-block;
   margin-left: 8px;
   font-family: var(--f-mono);
-  font-size: 0.5rem;
+  font-size: 0.64rem;
   letter-spacing: 0.16em;
   padding: 2px 5px 1px;
   border: 1.5px solid var(--red);
-  color: var(--red);
+  color: var(--red-text);
   vertical-align: middle;
   white-space: nowrap;
 }
@@ -478,15 +493,15 @@ ol {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  gap: 20px 32px;
-  padding-bottom: 18px;
+  gap: 26px 40px;
+  padding-bottom: 28px;
   border-bottom: var(--bw) solid currentColor;
 }
 .sechead__idx {
   font-family: var(--f-mono);
   font-size: 0.66rem;
-  letter-spacing: 0.22em;
-  color: var(--red);
+  letter-spacing: 0.18em;
+  color: var(--red-text);
   white-space: nowrap;
 }
 @media (max-width: 640px) {
@@ -544,4 +559,15 @@ ol {
 }
 .skip-link:focus {
   top: 12px;
+}
+
+/* ===========================  CIRCUIT RAIL GUTTER  ======================== */
+
+/* Above this width the fixed circuit rail is shown, so the content shells keep
+   clear of it. Full-bleed strips pad themselves where it matters. */
+@media (min-width: 1340px) {
+  .shell,
+  .shell-wide {
+    padding-right: calc(var(--gut) + var(--rail-w));
+  }
 }
