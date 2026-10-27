@@ -66,25 +66,38 @@ export default function RaceFlag({ shape = 'pennant', code, label, className = '
             <stop offset="1" stopColor="#55585c" />
           </linearGradient>
 
-          <filter id={wave} x="-12%" y="-25%" width="130%" height="160%">
+          {/*
+            The wave is a displacement map that *travels*. Animating the
+            turbulence frequency on its own only makes the noise breathe in
+            place, which reads as a shimmer; sliding the noise field sideways
+            with feOffset is what sends a ripple down the cloth from pole to
+            tip. The cloth, border and printed logo are all inside the filtered
+            group, so they deform together rather than the logo floating flat
+            on a moving cloth.
+          */}
+          <filter id={wave} x="-20%" y="-40%" width="150%" height="200%">
             <feTurbulence
               type="fractalNoise"
-              baseFrequency="0.006 0.017"
+              baseFrequency={shape === 'banner' ? '0.012 0.028' : '0.006 0.017'}
               numOctaves="2"
               seed="7"
               result="noise"
-            >
+            />
+            <feOffset in="noise" dx="0" dy="0" result="rolling">
               <animate
-                attributeName="baseFrequency"
-                dur="11s"
-                values="0.006 0.017; 0.010 0.026; 0.006 0.017"
+                attributeName="dx"
+                dur={shape === 'banner' ? '4.2s' : '6s'}
+                values="0; -170; 0"
+                calcMode="spline"
+                keyTimes="0; 0.5; 1"
+                keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"
                 repeatCount="indefinite"
               />
-            </feTurbulence>
+            </feOffset>
             <feDisplacementMap
               in="SourceGraphic"
-              in2="noise"
-              scale={shape === 'banner' ? 5 : 17}
+              in2="rolling"
+              scale={shape === 'banner' ? 11 : 24}
               xChannelSelector="R"
               yChannelSelector="G"
             />
