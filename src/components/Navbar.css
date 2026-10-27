@@ -58,10 +58,10 @@
   gap: 12px;
 }
 
-.nav__logo {
-  height: clamp(34px, 3.8vw, 52px);
+.nav__flag {
+  height: 98px;
   width: auto;
-  display: block;
+  flex: none;
 }
 
 /* ---- links --------------------------------------------------------------- */
@@ -238,6 +238,12 @@
 }
 
 @media (max-width: 1000px) {
+  .nav__flag {
+    height: 66px;
+  }
+}
+
+@media (max-width: 1000px) {
   .nav {
     grid-template-columns: auto auto;
     justify-content: space-between;
@@ -263,7 +269,7 @@
     font-size: 0.62rem;
     letter-spacing: 0.14em;
   }
-  .nav__logo {
-    height: 32px;
+  .nav__flag {
+    height: 54px;
   }
 }

@@ -1,40 +1,72 @@
+import { useId } from 'react'
 import { team } from '../data/site'
 import './RaceFlag.css'
 
 /**
- * Chequered pennant carrying the club logo.
+ * Chequered flag with the club logo printed on the white field.
  *
- * The cloth is a single SVG path: filled white, then stroked with a chequer
- * pattern, which gives the banded border without having to hand-build an inset
- * outline. The whole cloth group runs through a turbulence displacement filter
- * whose frequency is animated, so it ripples rather than just swaying — and the
- * logo, being inside that group, ripples with it.
+ * The cloth is a single path: filled white, then *stroked* with a chequer
+ * pattern, which produces the banded border without hand-building an inset
+ * outline. The cloth group runs through a turbulence displacement filter whose
+ * frequency is animated, so it ripples like fabric — and the logo, being inside
+ * that group, ripples with it rather than sitting flat on top.
+ *
+ * Two geometries:
+ *   banner  — shallow trapezoid, used as the navbar mark. The taper is gentle
+ *             so most of the cloth is usable and the logo stays legible small.
+ *   pennant — the classic tapered triangle, for use at display size.
  */
-export default function RaceFlag({ code = 'S1', label, className = '' }) {
+const SHAPES = {
+  banner: {
+    view: '0 0 400 130',
+    pole: { x: 3, y: 2, w: 6, h: 126, cx: 6, cy: 3, r: 5 },
+    // Shallow taper and a thin border, so the printed logo gets the most cloth
+    // the shape allows — wrapping a 3.5:1 lockup in a flag costs about half the
+    // width, and the mark still has to read at navbar size.
+    cloth: 'M 11 8 L 390 40 L 390 90 L 11 122 Z',
+    check: 12,
+    stroke: 9,
+    logo: { x: 28, y: 35, w: 212, h: 61 },
+    shadow: 4,
+  },
+  pennant: {
+    view: '0 0 660 470',
+    pole: { x: 92, y: 20, w: 15, h: 440, cx: 99.5, cy: 17, r: 13 },
+    cloth: 'M108 58 C 250 44, 400 92, 618 272 C 428 304, 258 396, 108 410 Z',
+    check: 30,
+    stroke: 29,
+    logo: { x: 150, y: 166, w: 312, h: 90 },
+    shadow: 10,
+  },
+}
+
+export default function RaceFlag({ shape = 'pennant', code, label, className = '' }) {
+  const uid = useId().replace(/:/g, '')
+  const s = SHAPES[shape] ?? SHAPES.pennant
+  const half = s.check / 2
+
+  const checks = `checks-${uid}`
+  const poleFill = `pole-${uid}`
+  const wave = `wave-${uid}`
+
   return (
-    <figure className={`flag ${className}`}>
-      <svg
-        className="flag__svg"
-        viewBox="0 0 660 470"
-        role="img"
-        aria-label={`${team.org} chequered flag`}
-      >
+    <figure className={`flag flag--${shape} ${className}`}>
+      <svg className="flag__svg" viewBox={s.view} role="img" aria-label={team.org}>
         <defs>
-          <pattern id="flag-checks" width="30" height="30" patternUnits="userSpaceOnUse">
-            <rect width="30" height="30" fill="#f4f2ec" />
-            <rect width="15" height="15" fill="#0b0b0b" />
-            <rect x="15" y="15" width="15" height="15" fill="#0b0b0b" />
+          <pattern id={checks} width={s.check} height={s.check} patternUnits="userSpaceOnUse">
+            <rect width={s.check} height={s.check} fill="#f4f2ec" />
+            <rect width={half} height={half} fill="#0b0b0b" />
+            <rect x={half} y={half} width={half} height={half} fill="#0b0b0b" />
           </pattern>
 
-          <linearGradient id="flag-pole" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id={poleFill} x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#6d6f73" />
             <stop offset="0.35" stopColor="#d7d9dc" />
             <stop offset="0.7" stopColor="#8d9095" />
             <stop offset="1" stopColor="#55585c" />
           </linearGradient>
 
-          {/* Cloth ripple. The animated frequency is what sells it as fabric. */}
-          <filter id="flag-wave" x="-12%" y="-20%" width="130%" height="150%">
+          <filter id={wave} x="-12%" y="-25%" width="130%" height="160%">
             <feTurbulence
               type="fractalNoise"
               baseFrequency="0.006 0.017"
@@ -52,40 +84,38 @@ export default function RaceFlag({ code = 'S1', label, className = '' }) {
             <feDisplacementMap
               in="SourceGraphic"
               in2="noise"
-              scale="17"
+              scale={shape === 'banner' ? 5 : 17}
               xChannelSelector="R"
               yChannelSelector="G"
             />
           </filter>
         </defs>
 
-        {/* pole */}
-        <rect x="92" y="20" width="15" height="440" fill="url(#flag-pole)" />
-        <circle cx="99.5" cy="17" r="13" fill="url(#flag-pole)" />
+        <rect x={s.pole.x} y={s.pole.y} width={s.pole.w} height={s.pole.h} fill={`url(#${poleFill})`} />
+        <circle cx={s.pole.cx} cy={s.pole.cy} r={s.pole.r} fill={`url(#${poleFill})`} />
 
-        <g className="flag__cloth">
-          {/* soft ground shadow so the cloth does not float */}
+        <g className="flag__cloth" style={{ filter: `url(#${wave})` }}>
           <path
-            d="M108 58 C 250 44, 400 92, 618 272 C 428 304, 258 396, 108 410 Z"
-            fill="rgba(0,0,0,0.55)"
-            transform="translate(9 12)"
+            d={s.cloth}
+            fill="rgba(0,0,0,0.5)"
+            transform={`translate(${s.shadow} ${s.shadow * 1.3})`}
           />
 
           <path
-            className="flag__field"
-            d="M108 58 C 250 44, 400 92, 618 272 C 428 304, 258 396, 108 410 Z"
+            d={s.cloth}
             fill="#f4f2ec"
-            stroke="url(#flag-checks)"
-            strokeWidth="29"
+            stroke={`url(#${checks})`}
+            strokeWidth={s.stroke}
             strokeLinejoin="round"
           />
 
+          {/* The logo is printed on the cloth, inside the filtered group. */}
           <image
             href={team.logoLight}
-            x="150"
-            y="166"
-            width="312"
-            height="90"
+            x={s.logo.x}
+            y={s.logo.y}
+            width={s.logo.w}
+            height={s.logo.h}
             preserveAspectRatio="xMidYMid meet"
           />
         </g>
@@ -93,7 +123,7 @@ export default function RaceFlag({ code = 'S1', label, className = '' }) {
 
       {label && (
         <figcaption className="flag__cap">
-          <span className="flag__code">{code}</span>
+          {code && <span className="flag__code">{code}</span>}
           <span className="flag__label mono">{label}</span>
         </figcaption>
       )}

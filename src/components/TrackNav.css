@@ -54,12 +54,25 @@
 
 /* ---- progress marker ----------------------------------------------------- */
 
-.track__marker-dot {
-  fill: #fff;
+/* The car runs the circuit as you scroll. Rotation comes from the path
+   tangent, so it always points the way it is going. */
+.track__car-body {
+  fill: #f4f2ec;
 }
-.track__marker-halo {
+.track__car-wing {
   fill: var(--red);
-  opacity: 0.3;
+}
+.track__car-tyre {
+  fill: #121216;
+  stroke: #3c3c44;
+  stroke-width: 0.8;
+}
+.track__car-cockpit {
+  fill: #121216;
+}
+.track__car-shadow {
+  fill: #000;
+  opacity: 0.45;
 }
 
 /* ---- nodes --------------------------------------------------------------- */

@@ -57,9 +57,19 @@ export default function TrackNav() {
       const max = document.documentElement.scrollHeight - window.innerHeight
       const scrolled = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
       const step = 1 / (nav.length - 1)
-      const t = Math.min(1, index * step + scrolled * step)
-      const p = path.getPointAtLength(path.getTotalLength() * t)
-      setMarker({ x: p.x, y: p.y })
+      // Start the car just past the node rather than on top of it, so the node
+      // it is sitting at stays readable. It still arrives at the next node by
+      // the time the page is fully scrolled.
+      const LEAD = 0.18
+      const t = Math.min(1, index * step + (LEAD + scrolled * (1 - LEAD)) * step)
+      const len = path.getTotalLength()
+      const p = path.getPointAtLength(len * t)
+      // Sample a little further along to get the tangent, so the car points
+      // the way it is travelling instead of always facing the same direction.
+      const ahead = path.getPointAtLength(Math.min(len, len * t + 6))
+      const behind = path.getPointAtLength(Math.max(0, len * t - 6))
+      const angle = (Math.atan2(ahead.y - behind.y, ahead.x - behind.x) * 180) / Math.PI
+      setMarker({ x: p.x, y: p.y, angle })
     }
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update)
@@ -102,12 +112,6 @@ export default function TrackNav() {
           <rect x="164" y="18" width="36" height="9" fill="url(#track-grid)" />
         </g>
 
-        {marker && (
-          <g aria-hidden="true" className="track__marker">
-            <circle cx={marker.x} cy={marker.y} r="11" className="track__marker-halo" />
-            <circle cx={marker.x} cy={marker.y} r="5" className="track__marker-dot" />
-          </g>
-        )}
 
         {points.map((p, i) => {
           const state = i === index ? 'is-on' : i < index ? 'is-done' : ''
@@ -130,6 +134,25 @@ export default function TrackNav() {
             </a>
           )
         })}
+
+        {marker && (
+          <g
+            aria-hidden="true"
+            className="track__car"
+            transform={`translate(${marker.x} ${marker.y}) rotate(${marker.angle}) scale(1.35)`}
+          >
+            {/* Drawn nose-to-the-right, then rotated onto the tangent. */}
+            <ellipse className="track__car-shadow" cx="0" cy="1.6" rx="11" ry="4.4" />
+            <rect className="track__car-tyre" x="-7.6" y="-6" width="4.6" height="3" rx="1.2" />
+            <rect className="track__car-tyre" x="-7.6" y="3" width="4.6" height="3" rx="1.2" />
+            <rect className="track__car-tyre" x="3.4" y="-5.4" width="4" height="2.6" rx="1.1" />
+            <rect className="track__car-tyre" x="3.4" y="2.8" width="4" height="2.6" rx="1.1" />
+            <rect className="track__car-wing" x="-10.2" y="-4.6" width="2.8" height="9.2" rx="1" />
+            <rect className="track__car-wing" x="7.2" y="-3.4" width="2.6" height="6.8" rx="1" />
+            <path className="track__car-body" d="M -8 -2.8 L 2 -3.4 L 7.6 -1.8 L 9 0 L 7.6 1.8 L 2 3.4 L -8 2.8 Z" />
+            <circle className="track__car-cockpit" cx="-1.2" cy="0" r="1.7" />
+          </g>
+        )}
       </svg>
     </nav>
   )

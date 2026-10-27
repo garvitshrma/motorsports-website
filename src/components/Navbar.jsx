@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import RaceFlag from './RaceFlag'
 import { nav, team } from '../data/site'
 import './Navbar.css'
 
@@ -34,9 +35,8 @@ export default function Navbar() {
       </div>
 
       <header className="nav">
-        {/* The lockup already carries the org name, so no wordmark beside it. */}
         <NavLink to="/" className="nav__mark" aria-label={`${team.org} — home`}>
-          <img className="nav__logo" src={team.logo} alt={team.org} width="1200" height="344" />
+          <RaceFlag shape="banner" className="nav__flag" />
         </NavLink>
 
         <nav className="nav__links" aria-label="Primary">

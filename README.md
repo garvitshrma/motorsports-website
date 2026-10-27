@@ -222,7 +222,11 @@ is not. It is also reused as the watermark on the recruitment section and 404.
 
 **[`TrackNav`](src/components/TrackNav.jsx)** is the page navigation drawn as a
 circuit: a winding tarmac path with a racing line, a numbered node per page, and
-a white marker that runs from the current node toward the next one as you scroll.
+**a car that drives the circuit** as you scroll, running from the current node
+toward the next. Its heading comes from the path tangent (sampled either side of
+its position), so it always points the way it is travelling. It carries a small
+lead offset so it sits just clear of the node it is parked at rather than
+covering the number, and it is drawn last so it passes over the nodes.
 
 Node positions are *measured* off the SVG path with `getPointAtLength`, not
 hard-coded — edit the `TRACK` path string and the nodes follow it. The nodes are
@@ -235,13 +239,24 @@ the right edge and appears only at 1340px and up; above that breakpoint `.shell`
 (and the two full-bleed strips) reserve `--rail-w` on the right so nothing ever
 sits underneath it. The top navbar stays the primary navigation at every size.
 
-**[`RaceFlag`](src/components/RaceFlag.jsx)** is the chequered pennant. The cloth
-is one SVG path filled white and *stroked* with a chequer pattern — that gives
-the banded border without hand-building an inset outline. The whole cloth group
-runs through a turbulence displacement filter whose frequency is animated, so it
-ripples like fabric rather than just swaying, and the logo inside the group
-ripples with it. It uses `logoLight` (the original colours), since the flag field
-is white.
+**[`RaceFlag`](src/components/RaceFlag.jsx)** is the chequered flag with the club
+logo **printed on the white field**. The cloth is one SVG path filled white and
+*stroked* with a chequer pattern — that gives the banded border without
+hand-building an inset outline. The cloth group runs through a turbulence
+displacement filter whose frequency is animated, so it ripples like fabric, and
+the logo, being inside that group, ripples with it rather than sitting flat on
+top. It uses `logoLight` (original colours), since the field is white.
+
+Two geometries:
+
+| `shape` | Where | Why |
+| --- | --- | --- |
+| `banner` | **the navbar** — it is the site's brand mark | Shallow trapezoid taper and a thin chequer border, so most of the cloth is usable and the printed logo still reads at header size |
+| `pennant` | display size | The classic deep taper from the reference |
+
+Wrapping a 3.5:1 lockup in a flag costs roughly half the width to pole, taper
+and border, so the navbar bar is taller than a flat logo would need — the
+`--nav-h` token carries that, and steps down on narrow screens.
 
 Both honour `prefers-reduced-motion`: the ripple filter and sway are dropped, and
 the rail's transitions stop.
@@ -274,6 +289,27 @@ be opened up or tightened in one place:
 - `--gut` — the page gutter, `clamp(22px, 5vw, 88px)`
 - `--rail-w` — right-hand gutter reserved for the circuit rail
 - `.sec` vertical rhythm, `clamp(92px, 11.5vw, 210px)`
+
+---
+
+## Deploying — Git LFS
+
+`public/models/car.glb` was tracked by **Git LFS**. Vercel does not fetch LFS
+objects during a build, so the deploy got the 132-byte pointer file instead of
+the model — it was served with a `.glb` content type, failed to parse, and the
+scene fell back to the technical drawing. That is why the car was missing in
+production while working locally.
+
+LFS has been removed for this file (it is 1.9 MB now, well inside normal limits)
+and the real bytes are staged. **Commit and redeploy** to pick it up:
+
+```bash
+git commit -m "Store car.glb directly instead of via LFS"
+git push
+```
+
+If you ever add a large asset again, prefer compressing it over LFS — or the
+same failure comes back silently.
 
 ---
 

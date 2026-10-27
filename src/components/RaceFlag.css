@@ -14,10 +14,16 @@
 }
 
 /* The ripple filter plus a slow sway of the whole cloth. */
-.flag__cloth {
-  filter: url(#flag-wave);
+.flag--pennant .flag__cloth {
   transform-origin: 108px 234px;
   animation: flag-sway 7s ease-in-out infinite;
+}
+
+/* The navbar banner ripples but does not sway — a mark that drifts around in
+   the header reads as a glitch, not as cloth. */
+.flag--banner .flag__svg {
+  height: 100%;
+  width: auto;
 }
 
 @keyframes flag-sway {

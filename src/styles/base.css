@@ -51,7 +51,21 @@
   /* Width reserved on the right for the fixed circuit rail. */
   --rail-w: 234px;
   --maxw: 1600px;
-  --nav-h: 78px;
+  --nav-h: 112px;
+}
+
+/* The bar only has to be tall enough for the flag mark, which shrinks on
+   narrow screens — so the header height follows it. Declared here rather than
+   in Navbar.css because this file is bundled last, so its :root always wins. */
+@media (max-width: 1000px) {
+  :root {
+    --nav-h: 86px;
+  }
+}
+@media (max-width: 480px) {
+  :root {
+    --nav-h: 72px;
+  }
 }
 
 /* ===========================  RESET  ====================================== */
