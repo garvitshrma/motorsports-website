@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { team } from '../data/site'
-import { subscribe } from '../lib/boot'
 import './Loader.css'
 
 /** Shortest time the screen stays up, so it never flashes. */
 const MIN_MS = 1600
 /**
- * Longest it will ever hold the page. The car model can be large; past this
- * point the site is shown and the car arrives on its own in the hero.
+ * Longest it will ever hold the page. Nothing heavy loads now that the 3D car
+ * is gone, so this is purely a stall guard.
  */
-const MAX_MS = 5000
+const MAX_MS = 3500
 
 export default function Loader({ onDone }) {
   const [pct, setPct] = useState(0)
@@ -17,15 +16,8 @@ export default function Loader({ onDone }) {
   const startedAt = useRef(performance.now())
 
   useEffect(() => {
-    let asset = 0
-    let expects = null
     let finished = false
     let shown = 0 // high-water mark: the bar must never run backwards
-
-    const unsub = subscribe((s) => {
-      asset = s.assetProgress
-      expects = s.expectsAssets
-    })
 
     const windowLoaded = () => document.readyState === 'complete'
 
@@ -46,9 +38,8 @@ export default function Loader({ onDone }) {
       // a big download is still negotiating.
       const floor = Math.min(92, (elapsed / MAX_MS) * 100)
 
-      // Real signal: the document itself, plus the 3D asset when there is one.
-      const docPart = windowLoaded() ? 100 : 55
-      const real = expects === false ? docPart : Math.min(docPart, asset)
+      // Real signal: the document itself.
+      const real = windowLoaded() ? 100 : 55
 
       // Everything may already be cached, in which case `real` is 100 on the
       // first tick. Cap by elapsed time so the number always counts up instead
@@ -61,8 +52,7 @@ export default function Loader({ onDone }) {
       shown = Math.max(shown, Math.max(0, Math.min(100, value)))
       setPct(Math.round(shown))
 
-      const ready =
-        elapsed >= MIN_MS && (elapsed >= MAX_MS || (windowLoaded() && (expects === false || asset >= 100)))
+      const ready = elapsed >= MIN_MS && (elapsed >= MAX_MS || windowLoaded())
 
       if (ready) finish()
     }
@@ -81,7 +71,6 @@ export default function Loader({ onDone }) {
     return () => {
       clearInterval(id)
       clearTimeout(backstop)
-      unsub()
     }
   }, [onDone])
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import VehicleDrawing from '../three/VehicleDrawing'
+import VehicleDrawing from '../components/VehicleDrawing'
 import { usePageTitle } from '../lib/usePageTitle'
 import './pages.css'
 

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Counter } from '../components/ui'
 import { teamStats } from '../data/site'
-import VehicleDrawing from '../three/VehicleDrawing'
+import VehicleDrawing from '../components/VehicleDrawing'
 
 /**
  * Recruitment. The closing statement of the page, so it gets the largest type

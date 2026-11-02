@@ -5,8 +5,9 @@ rules, hard block shadows, oversized condensed display type, blueprint underlays
 and a restrained ink / paper / grey palette with racing red used only for
 accents, active states and figures that matter.
 
-Stack: **React 19 + Vite 7 + React Three Fiber + drei + three + Framer Motion**,
-hand-authored CSS (no utility framework — the layouts are too editorial for one).
+Stack: **React 19 + Vite 7 + React Router + Framer Motion**, hand-authored CSS
+(no utility framework — the layouts are too editorial for one). No 3D runtime:
+the hero vehicle is an SVG technical drawing.
 
 ```bash
 npm install
@@ -86,135 +87,18 @@ the logo drives in from the left, red speed lines sweep beneath it, and the mark
 lights up left-to-right as a clip mask tracks real progress — alongside a red
 bar and a 000–100 counter. Four shutters then lift away like a garage door.
 
-Progress is genuine, not faked. The 3D chunk reports loader progress through a
-tiny shared bus ([`src/lib/boot.js`](src/lib/boot.js)) so the main bundle never
-has to import three.js just to show a percentage. Two guards matter:
+Progress tracks document readiness. Two guards matter:
 
-- **The bar only ever moves forward.** three's loading manager reports
-  `loaded / total`, and `total` grows as new items are queued — so when the
-  `.glb` finishes and its textures are added, the ratio drops back down and the
-  percentage runs backwards. Progress is now a high-water mark in
-  `boot.js`, with a second monotonic guard in the loader for the
-  document-ready step.
 - `MIN_MS` (1.6s) — the counter is rate-limited so it always counts up, even
   when everything is already cached, instead of snapping to 100.
-- `MAX_MS` (5s) — an absolute cap. A large car model must never hold the whole
-  site hostage; past this point the site appears and the car arrives on its own
-  in the hero. A `setInterval` plus a backstop `setTimeout` drives it rather
+- `MAX_MS` (3.5s) — an absolute cap, purely a stall guard now that nothing
+  heavy loads. A `setInterval` plus a backstop `setTimeout` drives it rather
   than `requestAnimationFrame`, which browsers pause entirely in background
   tabs — that would otherwise leave a frozen loading screen.
 
 **Route changes** fade the old page out and the new one in (~0.3s), with a red
 bar sweeping under the navbar. Both honour `prefers-reduced-motion`, which drops
 straight to an instant swap.
-
----
-
-## The 3D car
-
-Drop the team's model at:
-
-```
-public/models/car.glb
-```
-
-The shipped `car.glb` is **optimised to 1.9 MB** (down from 106 MB). Textures
-were the whole problem — 88 MB of the original was PNG/JPEG maps, against only
-17 MB of geometry.
-
-Re-run the pipeline after replacing the model (`@gltf-transform/cli` is a
-devDependency):
-
-```bash
-npx gltf-transform optimize <source>.glb public/models/car.glb   --compress meshopt --texture-compress webp --texture-size 1024 --simplify true
-```
-
-| Step | Effect |
-| --- | --- |
-| `--texture-compress webp --texture-size 1024` | 88 MB of PNG → 0.7 MB of WebP |
-| `--simplify true` | 329k → 136k triangles |
-| `--compress meshopt` | quantises and packs the remaining geometry |
-| (join/dedup) | 16 meshes → 5, so fewer draw calls |
-
-All three extensions it writes — `EXT_meshopt_compression`, `EXT_texture_webp`
-and `KHR_mesh_quantization` — decode **without a CDN**: drei wires three-stdlib's
-`MeshoptDecoder` by default, and three handles the other two natively. Draco was
-deliberately avoided because drei fetches its decoder from a Google CDN.
-
-Raise `--texture-size` to 2048 if the car looks soft on large displays; it costs
-little now that the maps are WebP.
-
-> The original 106 MB asset is still in git history if you need it back
-> (`git checkout 3697b8e -- public/models/car.glb`). `public/models/` also holds
-> unreferenced `car2.glb` (16 MB) and `car3.glb` (25 MB) — everything in
-> `public/` ships whether the code imports it or not, so those 41 MB are still
-> in every deploy.
-
-Nothing else needs to change. The site detects the file at runtime and swaps
-from the fallback drawing to the live scene.
-
-**Geometry is never modified at runtime** — the model is only centred, seated on
-the ground plane, and uniformly scaled so its longest horizontal axis is a known
-size, which keeps framing consistent whatever units the export used.
-
-That normalisation lives in [`normaliseModel`](src/three/normaliseModel.js) and
-is deliberately **idempotent**: it resets the transform before measuring.
-`Box3.setFromObject` reports world-space bounds, so measuring a model that has
-already been scaled folds the old scale into the new one — and React StrictMode
-runs layout effects twice on every mount. That shipped once as "the car is
-sometimes small, sometimes big", alternating between the right size and double
-it. The offsets are also multiplied by the scale, since three applies
-translation in parent units, outside the scale.
-
-All tuning lives in [`src/three/carConfig.js`](src/three/carConfig.js):
-
-| Setting | What it does |
-| --- | --- |
-| `MODEL_URL` | Path to the asset |
-| `TARGET_LENGTH` | World size the car is normalised to |
-| `BASE_YAW` | Resting angle (default is a 3/4 front view) |
-| `SCROLL_YAW` | How far it rotates toward profile as the hero scrolls away |
-| `PITCH` / `ROLL` | Corrections if the export is not Y-up |
-| `OFFSET` | Nudges the car off the layout centre |
-| `POINTER_YAW` / `POINTER_PITCH` | Cursor response (kept restrained) |
-| `PLAY_CLIPS` / `CLIP_NAME` | Animation clips — see below |
-| `CAMERA.*` | Framing, dolly and sway |
-
-If the `.glb` ships animation clips they are **inspected but not played**. Their
-names are logged to the console on load (`[CarScene] clips available…`); set
-`PLAY_CLIPS: true` (optionally with `CLIP_NAME`) once you have checked that a
-clip actually improves the shot rather than fighting the scroll choreography.
-
-### Rendering
-
-- Lighting is a pit-garage setup: hard key from high front-left, cool rim behind
-  to carve out the silhouette, low warm fill. Reflections come from a
-  procedurally generated `RoomEnvironment` — **no external HDR download**.
-- `ContactShadows` ground the car so it doesn't read as a floating render.
-- Tone mapping is ACES Filmic.
-
-### Performance and fallbacks
-
-The whole three.js stack is a **lazy chunk** — it is not fetched until the stage
-scrolls into view, so the rest of the site paints without it.
-
-`src/components/CarStage.jsx` decides what to render:
-
-| Condition | Result |
-| --- | --- |
-| Desktop, WebGL, model present | Full scene: shadows, DPR ≤ 2, antialiasing |
-| Narrow screen / ≤ 4 cores | Reduced: no shadow maps, DPR ≤ 1.5, single-frame contact shadow |
-| `deviceMemory` < 4, or no WebGL | Scene skipped entirely |
-| `car.glb` missing | Technical side-elevation drawing |
-| Scene throws at runtime | Error boundary inside the Canvas swaps to the drawing |
-
-The frame loop is also suspended (`frameloop="never"`) whenever the stage is off
-screen, and scroll and pointer values are held in refs so neither ever triggers a
-React re-render.
-
-The fallback is a real drawing ([`src/three/VehicleDrawing.jsx`](src/three/VehicleDrawing.jsx)),
-not a stand-in 3D object — an unfinished spec sheet is honest in a way a grey box
-is not. It is also reused as the watermark on the recruitment section and 404.
 
 ---
 
@@ -292,27 +176,6 @@ be opened up or tightened in one place:
 
 ---
 
-## Deploying — Git LFS
-
-`public/models/car.glb` was tracked by **Git LFS**. Vercel does not fetch LFS
-objects during a build, so the deploy got the 132-byte pointer file instead of
-the model — it was served with a `.glb` content type, failed to parse, and the
-scene fell back to the technical drawing. That is why the car was missing in
-production while working locally.
-
-LFS has been removed for this file (it is 1.9 MB now, well inside normal limits)
-and the real bytes are staged. **Commit and redeploy** to pick it up:
-
-```bash
-git commit -m "Store car.glb directly instead of via LFS"
-git push
-```
-
-If you ever add a large asset again, prefer compressing it over LFS — or the
-same failure comes back silently.
-
----
-
 ## Content — please read
 
 **All copy comes from the existing site** (`iitbh-fi.vercel.app`) and lives in one
@@ -363,12 +226,12 @@ address, and the 4 subsystems / 30+ engineers / 1 shared vision figures.
 
 ```
 src/
-  components/     Navbar, Footer, PageHead, CarStage, ui primitives
+  components/     Navbar, Footer, PageHead, TrackNav, RaceFlag,
+                  CarStage (the hero drawing), VehicleDrawing, ui primitives
   sections/       Home sections — Hero, About, Engineering, Journey,
                   Achievements, PartnersStrip, Join
   pages/          Routed pages — Home, Vehicles, Crew, Partners,
                   Archive, Dispatch, Contact, NotFound
-  three/          carConfig, CarScene, CarModel, VehicleDrawing
   data/site.js    ALL content
   styles/base.css Design tokens, reset, type scale, primitives
   lib/            usePageTitle
@@ -419,3 +282,20 @@ pretending to send. Set it to a form service or API route and it POSTs JSON
 Skip link, focus-visible outlines, labelled form fields, `aria-*` on the mobile
 nav and filters, 44–48px minimum touch targets, and `prefers-reduced-motion`
 honoured — reveals, counters and the marquee all stop.
+
+---
+
+## The hero vehicle
+
+It is an SVG technical side elevation
+([`VehicleDrawing`](src/components/VehicleDrawing.jsx)), parallaxed against the
+headline by [`CarStage`](src/components/CarStage.jsx) — pointer and scroll are
+written to CSS custom properties, so neither causes a React re-render. The same
+drawing is reused as the watermark on the 404 and the recruitment section.
+
+There was previously a WebGL hero rendering a `.glb` through React Three Fiber.
+It has been removed along with `three`, `@react-three/fiber`, `@react-three/drei`
+and the model assets. If you ever want it back, it is all in git history — but
+note what it cost: roughly 1.1 MB of JavaScript, a 106 MB source asset (1.9 MB
+after compression), and a Git LFS pointer that silently broke the production
+deploy. The drawing has no such tail.

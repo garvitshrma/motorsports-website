@@ -18,12 +18,20 @@ import './RaceFlag.css'
  */
 const SHAPES = {
   banner: {
-    view: '0 0 400 130',
+    view: '0 0 312 130',
     pole: { x: 3, y: 2, w: 6, h: 126, cx: 6, cy: 3, r: 5 },
-    // Shallow taper and a thin border, so the printed logo gets the most cloth
-    // the shape allows — wrapping a 3.5:1 lockup in a flag costs about half the
-    // width, and the mark still has to read at navbar size.
-    cloth: 'M 11 8 L 390 40 L 390 90 L 11 122 Z',
+    /*
+     * Shallow taper and a thin border, so the printed logo gets the most cloth
+     * the shape allows — wrapping a 3.5:1 lockup in a flag costs about half the
+     * width, and the mark still has to read at navbar size.
+     *
+     * The cloth stops shortly after the logo rather than tapering on for
+     * another third of the width. That keeps the flag compact without touching
+     * the logo, since the taper only ever occupied space the logo did not use.
+     * The slopes are unchanged: steepening them to narrow the trailing edge
+     * would eat into the field height the logo needs.
+     */
+    cloth: 'M 11 8 L 300 32 L 300 98 L 11 122 Z',
     check: 12,
     stroke: 9,
     logo: { x: 28, y: 35, w: 212, h: 61 },
